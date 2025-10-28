@@ -1,0 +1,112 @@
+# ----------------------------
+# OS / Editor / IDE
+# ----------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.orig
+*.bak
+*.tmp
+*.temp
+*.log
+
+# VS Code / JetBrains
+.vscode/
+*.code-workspace
+.idea/
+
+# ----------------------------
+# Python / Packaging
+# ----------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.py.class
+*.so
+
+# Virtual envs
+.venv/
+venv/
+env/
+.python-version
+
+# Builds / dists / metadata
+build/
+dist/
+ wheels/
+*.egg
+*.egg-info/
+.eggs/
+MANIFEST
+
+# Caches
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Coverage / testing
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# ----------------------------
+# Env / Secrets (lokal)
+# ----------------------------
+.env
+.env.*
+*.env
+*.secret
+secrets.json
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+*.keystore
+
+# ----------------------------
+# Docs / Notebooks
+# ----------------------------
+# MkDocs / Sphinx
+site/
+docs/_build/
+docs/_autosummary/
+# Jupyter
+.ipynb_checkpoints/
+
+# ----------------------------
+# Node (falls Beispiele/Docs Assets enthalten)
+# ----------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ----------------------------
+# Project-specific (Cirobotix)
+# ----------------------------
+# generierte Artefakte / temporäre Outputs
+generated/
+artifacts/
+reports/
+tmp/
+codex_issues.json
+codex_plan.json
+
+# ----------------------------
+# Git / CI helpers
+# ----------------------------
+# Git merge tools / patches
+*.rej
+*.patch
+
+# Local tooling
+.tools/
+scripts/local/
