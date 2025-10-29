@@ -1,0 +1,91 @@
+confluence:
+  base_url: "https://example.atlassian.net/wiki"
+  space: "EXAMPLE_SPACE"
+  labels:
+    arc42: "arc42"
+    adr: "adr"
+    app_prefix: "app_"                              # yields e.g. "app_research"
+  token_env: "CONFLUENCE_TOKEN"
+  email_env: "CONFLUENCE_EMAIL"
+
+  arc42:
+    # Map Confluence headings to normalized section keys
+    section_map:
+      goals:
+        - "Requirements & Goals"
+      constraints:
+        - "Constraints"
+      context:
+        - "Context"
+      solution_strategy:
+        - "Solution Strategy"
+      building_blocks:
+        - "Building Block View"
+      runtime_view:
+        - "Runtime View (typical flow)"
+      deployment_view:
+        - "Deployment"
+      crosscutting:
+        - "Cross-cutting Concepts"
+      quality_scenarios:
+        - "Quality Scenarios"
+      risks_and_mitigations:
+        - "Risks & Mitigations"
+    # Allowed heading levels considered as section boundaries
+    heading_levels: [1, 2, 3, 4, 5, 6]
+    # Hard MVP limit per section (characters)
+    max_chars_per_section: 10000
+
+jira:
+  base_url: "https://example.atlassian.net"
+  project_key: "EXM"
+
+  # auto | company | team
+  project_mode: "auto"
+
+  # Only relevant for company-managed. Auto-detect if empty.
+  epic_link_field: ""
+
+  ready_status: "READY FOR GENERATE"
+  page_size: 100
+  token_env: "JIRA_TOKEN"
+  email_env: "JIRA_EMAIL"
+
+  fields:
+    app: "App"
+    component: "Component"
+    artifact_id: "Artifact ID"
+    artifact_type: "Artifact Type"
+    test_coverage: "Test Coverage Target"
+    acceptance_criteria: "Acceptance Criteria"
+
+tech_stack: &default_tech_stack
+  name: "django"
+  languages:
+    - name: "Python"
+      version: "3.11"
+      role: "ETL, orchestration, CLI"
+    - name: "SQL"
+      role: "Queries, migrations"
+  frameworks:
+    - name: "Django"
+      version: "4.2"
+      role: "Web, Admin, ORM"
+  data_stores:
+    - name: "PostgreSQL"
+      version: "15"
+      role: "Primary database"
+  testing:
+    - name: "pytest"
+      role: "Unit/Integration"
+    - name: "Selenium"
+      role: "UI tests"
+  ci_cd:
+    - name: "GitLab CI"
+      role: "Pipelines"
+  constraints:
+    - "Only OSS-compatible licenses"
+    - "No proprietary cloud services in the core"
+  notes:
+    - "ADR-03: PostgreSQL as the only core data store"
+    - "ADR-05: No container environment (project-specific; may be overridden per app)"

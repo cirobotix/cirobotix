@@ -110,3 +110,4 @@ codex_plan.json
 # Local tooling
 .tools/
 scripts/local/
+*.project.yaml
