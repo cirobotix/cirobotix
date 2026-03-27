@@ -1,10 +1,12 @@
 from pathlib import Path
 import re
 
+from .context import ProductionContext
+
 
 class OutputApplier:
-    def apply(self, request_id: str) -> list[Path]:
-        base = Path(".codegen") / "requests" / request_id
+    def run(self, context: ProductionContext) -> ProductionContext:
+        base = Path(".codegen") / "requests" / context.work_order.request_id
         response_path = base / "response.md"
 
         if not response_path.exists():
@@ -21,7 +23,8 @@ class OutputApplier:
             target.write_text(code.rstrip() + "\n", encoding="utf-8")
             written_files.append(target)
 
-        return written_files
+        context.written_files = written_files
+        return context
 
     def _extract_files(self, content: str) -> dict[str, str]:
         pattern = r"### FILE: (.+?)\n```python\n(.*?)```"

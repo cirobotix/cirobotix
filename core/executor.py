@@ -1,13 +1,16 @@
 from pathlib import Path
+
 from openai import OpenAI
+
+from .context import ProductionContext
 
 
 class Executor:
     def __init__(self) -> None:
         self.client = OpenAI()
 
-    def run(self, request_id: str, model: str = "gpt-4o-mini") -> Path:
-        base = Path(".codegen") / "requests" / request_id
+    def run(self, context: ProductionContext) -> ProductionContext:
+        base = Path(".codegen") / "requests" / context.work_order.request_id
         prompt_path = base / "prompt.md"
 
         if not prompt_path.exists():
@@ -16,7 +19,7 @@ class Executor:
         prompt = prompt_path.read_text(encoding="utf-8")
 
         response = self.client.responses.create(
-            model=model,
+            model=context.profile.llm_model,
             input=prompt,
         )
 
@@ -27,4 +30,6 @@ class Executor:
         output_path = base / "response.md"
         output_path.write_text(output_text, encoding="utf-8")
 
-        return output_path
+        context.response_path = output_path
+        return context
+

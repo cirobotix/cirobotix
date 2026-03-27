@@ -1,15 +1,18 @@
+from .context import ProductionContext
+
+
 class ReviewBuilder:
-    def build(self, request) -> str:
-        payload = request.payload
+    def run(self, context: ProductionContext) -> ProductionContext:
+        payload = context.work_order.payload
         methods = "\n".join(f"- {method}" for method in payload["methods"])
 
-        return f"""# Review Summary
+        context.review_text = f"""# Review Summary
 
 ## Request ID
-{request.request_id}
+{context.work_order.request_id}
 
 ## Blueprint
-{request.blueprint_name}
+{context.work_order.blueprint_name}
 
 ## Class Name
 {payload['class_name']}
@@ -42,3 +45,4 @@ class ReviewBuilder:
 - Is the pytest file at the exact requested path?
 - Was unrelated functionality avoided?
 """
+        return context

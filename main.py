@@ -1,5 +1,7 @@
 from core.blueprint import Blueprint
-from core.artifact import ArtifactRequest
+from core.work_order import WorkOrder
+from core.profile import ProductionProfile
+from core.context import ProductionContext
 from core.registry import Registry
 from core.validator import Validator
 from core.prompt import PromptBuilder
@@ -9,6 +11,7 @@ from core.executor import Executor
 from core.checker import OutputChecker
 from core.applier import OutputApplier
 from core.test_runner import TestRunner
+from core.production_line import ProductionLine
 
 
 def run() -> None:
@@ -47,7 +50,17 @@ def run() -> None:
         )
     )
 
-    request = ArtifactRequest(
+    profile = ProductionProfile(
+        llm_model="gpt-4o-mini",
+        run_local_tests=True,
+        test_command=["pytest"],
+        pythonpath_root=".",
+        use_code_formatter=False,
+        formatter_command=[],
+        fail_on_quality_error=True,
+    )
+
+    work_order = WorkOrder(
         request_id="test_002",
         blueprint_name="python_registry_class",
         payload={
@@ -66,27 +79,36 @@ def run() -> None:
         },
     )
 
-    validator = Validator(registry)
-    validator.validate(request)
+    blueprint = registry.get(work_order.blueprint_name)
 
-    prompt = PromptBuilder().build(request)
-    review = ReviewBuilder().build(request)
+    context = ProductionContext(
+        blueprint=blueprint,
+        work_order=work_order,
+        profile=profile,
+    )
 
-    Writer().write(request, prompt, review)
+    line = ProductionLine(
+        machines=[
+            Validator(registry),
+            PromptBuilder(),
+            ReviewBuilder(),
+            Writer(),
+            Executor(),
+            OutputChecker(),
+            OutputApplier(),
+            TestRunner(),
+        ]
+    )
 
-    output_path = Executor().run(request.request_id, model="gpt-4o-mini")
-    print(f"LLM output written to: {output_path}")
+    context = line.run(context)
 
-    OutputChecker().check(request.request_id)
+    print(f"LLM output written to: {context.response_path}")
 
-    written_files = OutputApplier().apply(request.request_id)
     print("\n✅ APPLIED FILES:")
-    for file_path in written_files:
+    for file_path in context.written_files:
         print(f"- {file_path}")
 
-    print("\n🧪 RUNNING TESTS...")
-    TestRunner().run()
-    print("✅ TESTS PASSED")
+    print("✅ PRODUCTION LINE COMPLETED")
 
 
 if __name__ == "__main__":

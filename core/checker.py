@@ -1,10 +1,12 @@
 from pathlib import Path
 import re
 
+from .context import ProductionContext
+
 
 class OutputChecker:
-    def check(self, request_id: str) -> None:
-        base = Path(".codegen") / "requests" / request_id
+    def run(self, context: ProductionContext) -> ProductionContext:
+        base = Path(".codegen") / "requests" / context.work_order.request_id
         response_path = base / "response.md"
 
         if not response_path.exists():
@@ -38,6 +40,7 @@ class OutputChecker:
             raise ValueError("Output validation failed")
 
         print("\n✅ CHECK PASSED")
+        return context
 
     def _extract_files(self, content: str) -> dict[str, str]:
         pattern = r"### FILE: (.+?)\n```python\n(.*?)```"

@@ -1,9 +1,12 @@
+from .context import ProductionContext
+
+
 class PromptBuilder:
-    def build(self, request) -> str:
-        payload = request.payload
+    def run(self, context: ProductionContext) -> ProductionContext:
+        payload = context.work_order.payload
         methods = "\n".join(f"- {method}" for method in payload["methods"])
 
-        return f"""# Role
+        context.prompt_text = f"""# Role
 You are an experienced Python engineer.
 
 # Task
@@ -12,7 +15,7 @@ Generate exactly two files:
 2. One pytest test file
 
 # Blueprint
-{request.blueprint_name}
+{context.work_order.blueprint_name}
 
 # Source File Path
 {payload['target_path']}
@@ -57,3 +60,4 @@ Use this exact structure:
 ```python
 ...code...
 """
+        return context

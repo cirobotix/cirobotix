@@ -1,28 +1,30 @@
-from .artifact import ArtifactRequest
+from typing import Any
+
+from .context import ProductionContext
 
 
 class Validator:
     def __init__(self, registry) -> None:
         self.registry = registry
 
-    def validate(self, request: ArtifactRequest) -> bool:
-        blueprint = self.registry.get(request.blueprint_name)
+    def run(self, context: ProductionContext) -> ProductionContext:
+        blueprint = self.registry.get(context.work_order.blueprint_name)
 
         missing: list[str] = []
-        for field in blueprint.required_fields:
-            value = request.payload.get(field)
+        for field_name in blueprint.required_fields:
+            value = context.work_order.payload.get(field_name)
             if value is None:
-                missing.append(field)
+                missing.append(field_name)
             elif isinstance(value, str) and not value.strip():
-                missing.append(field)
+                missing.append(field_name)
 
         if missing:
             raise ValueError(f"Missing required fields: {missing}")
 
-        self._validate_payload(request.payload)
-        return True
+        self._validate_payload(context.work_order.payload)
+        return context
 
-    def _validate_payload(self, payload: dict) -> None:
+    def _validate_payload(self, payload: dict[str, Any]) -> None:
         class_name = payload["class_name"]
         target_path = payload["target_path"]
         methods = payload["methods"]
