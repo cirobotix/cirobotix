@@ -6,8 +6,8 @@ class Executor:
     def __init__(self) -> None:
         self.client = OpenAI()
 
-    def run(self, request_id: str, model: str = "gpt-5.4") -> Path:
-        base = Path(".codegen") / request_id
+    def run(self, request_id: str, model: str = "gpt-4o-mini") -> Path:
+        base = Path(".codegen") / "requests" / request_id
         prompt_path = base / "prompt.md"
 
         if not prompt_path.exists():

@@ -44,6 +44,11 @@ Generate exactly two files:
 - Use pytest for tests
 - The code must fit into a console application codebase
 
+# Test File Requirement
+The test file must import the pytest library.
+The test file must import the generated class using this exact import:
+from core.generated_registry import ArtifactRegistry
+
 # Output Format
 Return only code.
 Use this exact structure:

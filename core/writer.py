@@ -4,7 +4,7 @@ import json
 
 class Writer:
     def write(self, request, prompt: str, review: str) -> Path:
-        base = Path(".codegen") / request.request_id
+        base = Path(".codegen") / "requests" / request.request_id
         base.mkdir(parents=True, exist_ok=True)
 
         task_path = base / "task.json"

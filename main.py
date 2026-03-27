@@ -1,11 +1,13 @@
 from core.artifact import ArtifactType, ArtifactRequest
 from core.registry import Registry
+from core.test_runner import TestRunner
 from core.validator import Validator
 from core.prompt import PromptBuilder
 from core.review import ReviewBuilder
 from core.writer import Writer
 from core.executor import Executor
 from core.checker import OutputChecker
+from core.applier import OutputApplier
 
 
 def run() -> None:
@@ -33,7 +35,7 @@ def run() -> None:
         artifact_type="python_registry_class",
         payload={
             "class_name": "ArtifactRegistry",
-            "target_path": "tool/core/generated_registry.py",
+            "target_path": "core/generated_registry.py",
             "test_path": "tests/core/test_generated_registry.py",
             "responsibility": "Register and retrieve artifact definitions for the CLI tool.",
             "methods": [
@@ -59,6 +61,15 @@ def run() -> None:
     print(f"LLM output written to: {output_path}")
 
     OutputChecker().check(request.request_id)
+
+    written_files = OutputApplier().apply(request.request_id)
+    print("\n✅ APPLIED FILES:")
+    for file_path in written_files:
+        print(f"- {file_path}")
+
+    print("\n🧪 RUNNING TESTS...")
+    TestRunner().run()
+    print("✅ TESTS PASSED")
 
 
 if __name__ == "__main__":

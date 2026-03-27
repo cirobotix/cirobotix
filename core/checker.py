@@ -4,7 +4,7 @@ import re
 
 class OutputChecker:
     def check(self, request_id: str) -> None:
-        base = Path(".codegen") / request_id
+        base = Path(".codegen") / "requests" / request_id
         response_path = base / "response.md"
 
         if not response_path.exists():
@@ -15,7 +15,7 @@ class OutputChecker:
 
         errors = []
 
-        source_path = "tool/core/generated_registry.py"
+        source_path = "core/generated_registry.py"
         test_path = "tests/core/test_generated_registry.py"
 
         if source_path not in files:
@@ -74,8 +74,11 @@ class OutputChecker:
         if "import pytest" not in test_code:
             errors.append("Missing pytest import in test file")
 
-        if "ArtifactRegistry" not in test_code:
-            errors.append("Test file does not reference ArtifactRegistry")
+        expected_import = "from core.generated_registry import ArtifactRegistry"
+        if expected_import not in test_code:
+            errors.append(
+                f"Missing expected source import in test file: {expected_import}"
+            )
 
         test_functions = re.findall(r"def\s+(test_\w+)\s*\(", test_code)
         if len(test_functions) < 3:
