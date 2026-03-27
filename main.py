@@ -12,6 +12,7 @@ from core.checker import OutputChecker
 from core.applier import OutputApplier
 from core.test_runner import TestRunner
 from core.production_line import ProductionLine
+from core.formatter import Formatter
 
 
 def run() -> None:
@@ -55,8 +56,8 @@ def run() -> None:
         run_local_tests=True,
         test_command=["pytest"],
         pythonpath_root=".",
-        use_code_formatter=False,
-        formatter_command=[],
+        use_code_formatter=True,
+        formatter_command=["ruff", "format"],
         fail_on_quality_error=True,
     )
 
@@ -96,6 +97,7 @@ def run() -> None:
             Executor(),
             OutputChecker(),
             OutputApplier(),
+            Formatter(),
             TestRunner(),
         ]
     )
