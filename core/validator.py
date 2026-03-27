@@ -6,10 +6,10 @@ class Validator:
         self.registry = registry
 
     def validate(self, request: ArtifactRequest) -> bool:
-        artifact = self.registry.get(request.artifact_type)
+        blueprint = self.registry.get(request.blueprint_name)
 
         missing: list[str] = []
-        for field in artifact.required_fields:
+        for field in blueprint.required_fields:
             value = request.payload.get(field)
             if value is None:
                 missing.append(field)

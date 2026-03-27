@@ -8,8 +8,8 @@ class ReviewBuilder:
 ## Request ID
 {request.request_id}
 
-## Artifact Type
-{request.artifact_type}
+## Blueprint
+{request.blueprint_name}
 
 ## Class Name
 {payload['class_name']}

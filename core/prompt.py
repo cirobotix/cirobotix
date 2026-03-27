@@ -11,8 +11,8 @@ Generate exactly two files:
 1. One Python source file
 2. One pytest test file
 
-# Artifact Type
-{request.artifact_type}
+# Blueprint
+{request.blueprint_name}
 
 # Source File Path
 {payload['target_path']}

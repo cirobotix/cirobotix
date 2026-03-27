@@ -1,17 +1,10 @@
 from dataclasses import dataclass, asdict
-from typing import Dict, Any, List
-
-
-@dataclass
-class ArtifactType:
-    name: str
-    required_fields: List[str]
-    description: str = ""
+from typing import Dict, Any
 
 
 @dataclass
 class ArtifactRequest:
-    artifact_type: str
+    blueprint_name: str
     payload: Dict[str, Any]
     request_id: str
 

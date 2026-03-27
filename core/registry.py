@@ -1,17 +1,17 @@
-from .artifact import ArtifactType
+from .blueprint import Blueprint
 
 
 class Registry:
     def __init__(self) -> None:
-        self.types: dict[str, ArtifactType] = {}
+        self.blueprints: dict[str, Blueprint] = {}
 
-    def register(self, artifact: ArtifactType) -> None:
-        if artifact.name in self.types:
-            raise ValueError(f"Artifact type already registered: {artifact.name}")
-        self.types[artifact.name] = artifact
+    def register(self, blueprint: Blueprint) -> None:
+        if blueprint.name in self.blueprints:
+            raise ValueError(f"Blueprint already registered: {blueprint.name}")
+        self.blueprints[blueprint.name] = blueprint
 
-    def get(self, name: str) -> ArtifactType:
+    def get(self, name: str) -> Blueprint:
         try:
-            return self.types[name]
+            return self.blueprints[name]
         except KeyError as exc:
-            raise ValueError(f"Unknown artifact type: {name}") from exc
+            raise ValueError(f"Unknown blueprint: {name}") from exc

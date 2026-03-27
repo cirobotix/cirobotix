@@ -1,6 +1,6 @@
-from core.artifact import ArtifactType, ArtifactRequest
+from core.blueprint import Blueprint
+from core.artifact import ArtifactRequest
 from core.registry import Registry
-from core.test_runner import TestRunner
 from core.validator import Validator
 from core.prompt import PromptBuilder
 from core.review import ReviewBuilder
@@ -8,13 +8,14 @@ from core.writer import Writer
 from core.executor import Executor
 from core.checker import OutputChecker
 from core.applier import OutputApplier
+from core.test_runner import TestRunner
 
 
 def run() -> None:
     registry = Registry()
 
     registry.register(
-        ArtifactType(
+        Blueprint(
             name="python_registry_class",
             required_fields=[
                 "class_name",
@@ -27,12 +28,28 @@ def run() -> None:
                 "list_behavior",
             ],
             description="A bounded Python registry class for a console application.",
+            output_files=[
+                "core/generated_registry.py",
+                "tests/core/test_generated_registry.py",
+            ],
+            constraints=[
+                "Generate exactly one Python class in the source file",
+                "Do not create unrelated helper classes",
+                "Use type hints",
+                "Include a class docstring",
+                "Do not add external dependencies",
+            ],
+            quality_requirements=[
+                "The test file must import pytest",
+                "The test file must import ArtifactRegistry from core.generated_registry",
+                "At least 3 pytest test functions must be generated",
+            ],
         )
     )
 
     request = ArtifactRequest(
         request_id="test_002",
-        artifact_type="python_registry_class",
+        blueprint_name="python_registry_class",
         payload={
             "class_name": "ArtifactRegistry",
             "target_path": "core/generated_registry.py",
