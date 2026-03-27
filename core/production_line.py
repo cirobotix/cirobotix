@@ -1,5 +1,6 @@
 from .context import ProductionContext
 from .machine import Machine
+from .result import StepResult
 
 
 class ProductionLine:
@@ -8,5 +9,34 @@ class ProductionLine:
 
     def run(self, context: ProductionContext) -> ProductionContext:
         for machine in self.machines:
-            context = machine.run(context)
+            name = machine.__class__.__name__
+
+            try:
+                context = machine.run(context)
+
+                context.add_step_result(
+                    StepResult(
+                        machine_name=name,
+                        success=True,
+                        message="OK",
+                    )
+                )
+
+            except Exception as exc:
+                error_message = str(exc)
+
+                context.add_step_result(
+                    StepResult(
+                        machine_name=name,
+                        success=False,
+                        message=error_message,
+                    )
+                )
+
+                context.add_error(f"{name}: {error_message}")
+
+                # Fail-fast Verhalten
+                if context.profile.fail_on_quality_error:
+                    raise
+
         return context

@@ -110,6 +110,11 @@ def run() -> None:
 
     print("✅ PRODUCTION LINE COMPLETED")
 
+    print("\n📊 STEP RESULTS:")
+    for step in context.step_results:
+        status = "✅" if step.success else "❌"
+        print(f"{status} {step.machine_name}: {step.message}")
+
 
 if __name__ == "__main__":
     run()
