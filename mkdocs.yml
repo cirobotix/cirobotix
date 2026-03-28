@@ -11,5 +11,4 @@ plugins:
 nav:
   - Home: index.md
   - Architecture: architecture.md
-  - API:
-      - Core: api/core.md
+  - Glossary: architecture_decisions/glossary.md
