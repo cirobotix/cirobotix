@@ -4,5 +4,4 @@ from .context import ProductionContext
 
 
 class Machine(Protocol):
-    def run(self, context: ProductionContext) -> ProductionContext:
-        ...
+    def run(self, context: ProductionContext) -> ProductionContext: ...

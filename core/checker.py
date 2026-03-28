@@ -1,5 +1,5 @@
-from pathlib import Path
 import re
+from pathlib import Path
 
 from .context import ProductionContext
 
@@ -79,9 +79,7 @@ class OutputChecker:
 
         expected_import = "from core.generated_registry import ArtifactRegistry"
         if expected_import not in test_code:
-            errors.append(
-                f"Missing expected source import in test file: {expected_import}"
-            )
+            errors.append(f"Missing expected source import in test file: {expected_import}")
 
         test_functions = re.findall(r"def\s+(test_\w+)\s*\(", test_code)
         if len(test_functions) < 3:

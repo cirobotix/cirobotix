@@ -32,4 +32,3 @@ class Executor:
 
         context.response_path = output_path
         return context
-

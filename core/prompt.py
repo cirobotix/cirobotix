@@ -44,24 +44,24 @@ Generate exactly two files:
 {invariants}
 
 # Source File Path
-{payload.get('target_path', '')}
+{payload.get("target_path", "")}
 
 # Test File Path
-{payload.get('test_path', '')}
+{payload.get("test_path", "")}
 
 # Class Name
-{payload.get('class_name', '')}
+{payload.get("class_name", "")}
 
 # Responsibility
-{payload.get('responsibility', '')}
+{payload.get("responsibility", "")}
 
 # Required Methods
 {methods}
 
 # Behavioral Requirements
-- register(definition): {payload.get('definition_contract', '')}
-- get(name): {payload.get('get_behavior', '')}
-- list_names(): {payload.get('list_behavior', '')}
+- register(definition): {payload.get("definition_contract", "")}
+- get(name): {payload.get("get_behavior", "")}
+- list_names(): {payload.get("list_behavior", "")}
 
 # Constraints
 - Generate exactly one Python class in the source file
@@ -93,7 +93,7 @@ from core.generated_registry import ArtifactRegistry
 
 # Final Verification Before Output
 Before returning the code, verify that:
-- The source file contains exactly one class named {payload.get('class_name', '')}
+- The source file contains exactly one class named {payload.get("class_name", "")}
 - The class contains a docstring directly below the class declaration
 - The required methods are present
 - The test file imports pytest
@@ -105,10 +105,10 @@ Before returning the code, verify that:
 Return only code.
 Use this exact structure:
 
-### FILE: {payload.get('target_path', '')}
+### FILE: {payload.get("target_path", "")}
 ```python
 # source code here
-FILE: {payload.get('test_path', '')}
+FILE: {payload.get("test_path", "")}
 # test code here
 """
         return context

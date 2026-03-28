@@ -10,18 +10,14 @@ class Formatter:
             return context
 
         if not context.profile.formatter_command:
-            raise ValueError(
-                "Formatter is enabled, but no formatter_command is configured."
-            )
+            raise ValueError("Formatter is enabled, but no formatter_command is configured.")
 
         if not context.written_files:
             raise ValueError(
                 "No written files available in context. Formatter must run after OutputApplier."
             )
 
-        command = context.profile.formatter_command + [
-            str(path) for path in context.written_files
-        ]
+        command = context.profile.formatter_command + [str(path) for path in context.written_files]
 
         print(f"Running formatter: {' '.join(command)}")
 
@@ -31,8 +27,6 @@ class Formatter:
         )
 
         if result.returncode != 0:
-            raise RuntimeError(
-                f"Formatter failed with exit code {result.returncode}"
-            )
+            raise RuntimeError(f"Formatter failed with exit code {result.returncode}")
 
         return context

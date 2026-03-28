@@ -15,24 +15,24 @@ class ReviewBuilder:
 {context.work_order.blueprint_name}
 
 ## Class Name
-{payload['class_name']}
+{payload["class_name"]}
 
 ## Source Path
-{payload['target_path']}
+{payload["target_path"]}
 
 ## Test Path
-{payload['test_path']}
+{payload["test_path"]}
 
 ## Responsibility
-{payload['responsibility']}
+{payload["responsibility"]}
 
 ## Expected Methods
 {methods}
 
 ## Behavioral Rules
-- register(definition): {payload['definition_contract']}
-- get(name): {payload['get_behavior']}
-- list_names(): {payload['list_behavior']}
+- register(definition): {payload["definition_contract"]}
+- get(name): {payload["get_behavior"]}
+- list_names(): {payload["list_behavior"]}
 
 ## Review Checklist
 - Does the source file contain exactly one class?

@@ -32,4 +32,3 @@ class ProfileLoader:
             formatter_command=data.get("formatter_command", []),
             fail_on_quality_error=data.get("fail_on_quality_error", True),
         )
-

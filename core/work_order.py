@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict, field
+from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from .work_order_type import WorkOrderType
