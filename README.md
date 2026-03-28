@@ -169,4 +169,7 @@ Public contribution model coming soon.
 
 ## 📜 License
 
-TBD
+All rights reserved.
+
+This project is currently under active development.
+Licensing terms will be defined at a later stage.
