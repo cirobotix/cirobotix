@@ -80,6 +80,9 @@ Generate exactly two files:
 - All modules must be importable relative to the configured Pythonpath root
 
 # Import Requirement
+- All referenced type hints must be properly imported
+- The source file must be valid Python and importable
+- Do not use Any unless it is explicitly imported from typing
 Use this exact import in the test file:
 from core.generated_registry import ArtifactRegistry
 

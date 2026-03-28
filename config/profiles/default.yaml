@@ -1,0 +1,10 @@
+llm_model: gpt-4o-mini
+run_local_tests: true
+test_command:
+  - pytest
+pythonpath_root: .
+use_code_formatter: true
+formatter_command:
+  - ruff
+  - format
+fail_on_quality_error: true

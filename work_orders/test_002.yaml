@@ -1,0 +1,37 @@
+request_id: test_002
+blueprint_name: python_registry_class
+profile_name: default
+order_type: create
+goal: Generate a bounded Python registry component with tests.
+
+read_files:
+  - core/registry.py
+  - core/blueprint.py
+  - core/work_order.py
+
+writable_files:
+  - core/generated_registry.py
+  - tests/core/test_generated_registry.py
+
+invariants:
+  - Generated code must be importable with PYTHONPATH='.'.
+  - Only declared writable files may be returned.
+
+acceptance_criteria:
+  - The source file contains exactly one class named ArtifactRegistry.
+  - The test file imports pytest.
+  - The test file imports ArtifactRegistry from core.generated_registry.
+  - At least 3 pytest test functions are generated.
+
+payload:
+  class_name: ArtifactRegistry
+  target_path: core/generated_registry.py
+  test_path: tests/core/test_generated_registry.py
+  responsibility: Register and retrieve artifact definitions for the CLI tool.
+  methods:
+    - register(definition)
+    - get(name)
+    - list_names()
+  definition_contract: definition must expose a non-empty string attribute 'name'
+  get_behavior: raise KeyError if the requested name does not exist
+  list_behavior: return all registered names sorted ascending

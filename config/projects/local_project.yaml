@@ -1,0 +1,8 @@
+root_path: .
+pythonpath_root: .
+source_roots:
+  - core
+test_roots:
+  - tests
+protected_files:
+  - core/executor.py

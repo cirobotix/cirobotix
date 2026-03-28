@@ -74,6 +74,10 @@ class Validator:
         if work_order.order_type == WorkOrderType.MODIFY and not work_order.writable_files:
             raise ValueError("modify work orders must define writable_files.")
 
+        if not isinstance(context.work_order.profile_name,
+                          str) or not context.work_order.profile_name.strip():
+            raise ValueError("profile_name must be a non-empty string.")
+
         for relative_path in work_order.read_files + work_order.writable_files:
             if not isinstance(relative_path, str) or not relative_path.strip():
                 raise ValueError("All file paths must be non-empty strings.")
