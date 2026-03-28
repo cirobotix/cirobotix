@@ -1,0 +1,15 @@
+site_name: cirobotix
+site_description: Architecture-driven code generation pipeline
+theme:
+  name: readthedocs
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - API:
+      - Core: api/core.md
