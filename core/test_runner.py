@@ -1,5 +1,5 @@
 import os
-import subprocess
+import subprocess # nosec B404
 
 from .context import ProductionContext
 
@@ -24,7 +24,7 @@ class TestRunner:
             f"{' '.join(context.profile.test_command)}"
         )
 
-        result = subprocess.run(
+        result = subprocess.run( # nosec B603
             context.profile.test_command,
             env=env,
             check=False,

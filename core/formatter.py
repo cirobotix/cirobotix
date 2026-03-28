@@ -1,4 +1,4 @@
-import subprocess
+import subprocess # nosec B404
 
 from .context import ProductionContext
 
@@ -21,7 +21,7 @@ class Formatter:
 
         print(f"Running formatter: {' '.join(command)}")
 
-        result = subprocess.run(
+        result = subprocess.run( # nosec B603
             command,
             check=False,
         )
