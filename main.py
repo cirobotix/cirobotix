@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from core.blueprint import Blueprint
+from core.context_assembler import ContextAssembler
 from core.project_context import ProjectContext
 from core.work_order import WorkOrder
 from core.profile import ProductionProfile
@@ -127,6 +128,7 @@ def run() -> None:
     line = ProductionLine(
         machines=[
             Validator(registry),
+            ContextAssembler(),
             PromptBuilder(),
             ReviewBuilder(),
             Writer(),

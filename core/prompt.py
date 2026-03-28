@@ -31,6 +31,9 @@ Generate exactly two files:
 - Source roots: {", ".join(project.source_roots)}
 - Test roots: {", ".join(project.test_roots)}
 
+# Existing Code Context
+{context.assembled_context or "No additional context provided."}
+
 # Read-Only Context Files
 {read_files}
 

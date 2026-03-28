@@ -20,6 +20,7 @@ class ProductionContext:
     prompt_text: Optional[str] = None
     review_text: Optional[str] = None
     response_path: Optional[Path] = None
+    assembled_context: Optional[str] = None
 
     written_files: list[Path] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)

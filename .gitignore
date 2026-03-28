@@ -17,3 +17,4 @@ venv/
 .pytest_cache
 .ruff_cache
 secret.txt
+project_dump.txt
