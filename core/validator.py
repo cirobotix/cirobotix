@@ -1,6 +1,7 @@
 from typing import Any
 
 from .context import ProductionContext
+from .work_order_type import WorkOrderType
 
 
 class Validator:
@@ -22,6 +23,7 @@ class Validator:
             raise ValueError(f"Missing required fields: {missing}")
 
         self._validate_payload(context.work_order.payload)
+        self._validate_project_context(context)
         return context
 
     def _validate_payload(self, payload: dict[str, Any]) -> None:
@@ -61,3 +63,26 @@ class Validator:
         for method in methods:
             if not isinstance(method, str) or not method.strip():
                 raise ValueError("Each method entry must be a non-empty string.")
+
+    def _validate_project_context(self, context: ProductionContext) -> None:
+        project = context.project
+        work_order = context.work_order
+
+        if not project.root_path.exists():
+            raise ValueError("project.root_path does not exist.")
+
+        if work_order.order_type == WorkOrderType.MODIFY and not work_order.writable_files:
+            raise ValueError("modify work orders must define writable_files.")
+
+        for relative_path in work_order.read_files + work_order.writable_files:
+            if not isinstance(relative_path, str) or not relative_path.strip():
+                raise ValueError("All file paths must be non-empty strings.")
+
+        for relative_path in work_order.read_files:
+            if not project.resolve(relative_path).exists():
+                raise ValueError(f"Read file does not exist: {relative_path}")
+
+        for relative_path in work_order.writable_files:
+            if relative_path in project.protected_files:
+                raise ValueError(
+                    f"Protected file cannot be writable: {relative_path}")

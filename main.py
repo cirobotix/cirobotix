@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from core.blueprint import Blueprint
+from core.project_context import ProjectContext
 from core.work_order import WorkOrder
 from core.profile import ProductionProfile
 from core.context import ProductionContext
@@ -6,6 +9,7 @@ from core.registry import Registry
 from core.validator import Validator
 from core.prompt import PromptBuilder
 from core.review import ReviewBuilder
+from core.work_order_type import WorkOrderType
 from core.writer import Writer
 from core.executor import Executor
 from core.checker import OutputChecker
@@ -61,9 +65,33 @@ def run() -> None:
         fail_on_quality_error=True,
     )
 
+    project = ProjectContext(
+        root_path=Path(".").resolve(),
+        pythonpath_root=".",
+        source_roots=["core"],
+        test_roots=["tests"],
+        read_files=[
+            "core/context.py",
+            "core/work_order.py",
+            "core/prompt.py",
+            "core/checker.py",
+        ],
+        writable_files=[
+            "core/project_context.py",
+            "core/work_order.py",
+            "core/context.py",
+            "core/prompt.py",
+            "core/validator.py",
+        ],
+        protected_files=[
+            "core/executor.py",
+        ],
+    )
+
     work_order = WorkOrder(
         request_id="test_002",
         blueprint_name="python_registry_class",
+        order_type=WorkOrderType.CREATE,
         payload={
             "class_name": "ArtifactRegistry",
             "target_path": "core/generated_registry.py",
@@ -78,6 +106,13 @@ def run() -> None:
             "get_behavior": "raise KeyError if the requested name does not exist",
             "list_behavior": "return all registered names sorted ascending",
         },
+        read_files=project.read_files,
+        writable_files=project.writable_files,
+        invariants=[
+            "Existing imports must remain valid.",
+            "Only writable_files may be modified.",
+            "Generated code must be importable with PYTHONPATH='.'.",
+        ],
     )
 
     blueprint = registry.get(work_order.blueprint_name)
@@ -86,6 +121,7 @@ def run() -> None:
         blueprint=blueprint,
         work_order=work_order,
         profile=profile,
+        project=project,
     )
 
     line = ProductionLine(

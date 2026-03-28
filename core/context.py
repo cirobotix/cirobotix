@@ -4,8 +4,9 @@ from typing import Optional
 
 from .blueprint import Blueprint
 from .profile import ProductionProfile
-from .work_order import WorkOrder
+from .project_context import ProjectContext
 from .result import StepResult
+from .work_order import WorkOrder
 
 
 @dataclass
@@ -13,6 +14,7 @@ class ProductionContext:
     blueprint: Blueprint
     work_order: WorkOrder
     profile: ProductionProfile
+    project: ProjectContext
 
     base_dir: Optional[Path] = None
     prompt_text: Optional[str] = None
