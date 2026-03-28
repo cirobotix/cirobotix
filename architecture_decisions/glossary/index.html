@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Glossary - cirobotix</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Glossary";
+        var mkdocs_page_input_path = "architecture_decisions/glossary.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> cirobotix
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../architecture/">Architecture</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Glossary</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#ziel">🎯 Ziel</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">cirobotix</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Glossary</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="architecture-glossary-codegen-manufacturing-system">🏭 Architecture Glossary – Codegen Manufacturing System</h1>
+<h2 id="ziel">🎯 Ziel</h2>
+<p>Dieses Dokument definiert die zentrale Architektur und Begriffswelt unseres Code-Generierungssystems.</p>
+<p>Das System orientiert sich bewusst an industriellen Fertigungsprozessen (MES), um:
+- Determinismus zu gewährleisten
+- klare Verantwortlichkeiten zu schaffen
+- Skalierbarkeit und Erweiterbarkeit sicherzustellen</p>
+<p>Wichtig:
+👉 Dieses System ersetzt <strong>keine CI/CD-Pipeline</strong><br />
+👉 Die CI/CD-Pipeline ist die eigentliche Fertigungsstraße</p>
+<hr />
+<h1 id="1-kernprinzip">🧩 1. Kernprinzip</h1>
+<p>Das System trennt klar zwischen:</p>
+<ul>
+<li><strong>Produktdefinition (Blueprint)</strong></li>
+<li><strong>Fertigungsauftrag (Work Order)</strong></li>
+<li><strong>Arbeitsgängen (Operations)</strong></li>
+<li><strong>Maschinen (Execution Units)</strong></li>
+<li><strong>Kalibrierung (Configuration)</strong></li>
+<li><strong>Qualitätssicherung (QA)</strong></li>
+<li><strong>Fertigungsstraße (CI/CD)</strong></li>
+<li><strong>Übergabe (Merge Request)</strong></li>
+</ul>
+<hr />
+<h1 id="2-blueprint">📐 2. Blueprint</h1>
+<h2 id="definition">Definition</h2>
+<p>Der Blueprint ist der <strong>Bauplan eines Artefakts</strong>.</p>
+<h2 id="verantwortung">Verantwortung</h2>
+<p>Beschreibt:
+- Struktur des Artefakts
+- erwartete Dateien
+- fachliche Anforderungen
+- technische Constraints
+- Qualitätsanforderungen</p>
+<h2 id="wichtig">Wichtig</h2>
+<ul>
+<li>Kein Prompt!</li>
+<li>Kein Code!</li>
+<li>Kein Prozess!</li>
+</ul>
+<p>👉 Der Blueprint ist die <strong>Single Source of Truth</strong> für das Soll.</p>
+<hr />
+<h1 id="3-work-order">📦 3. Work Order</h1>
+<h2 id="definition_1">Definition</h2>
+<p>Ein konkreter <strong>Fertigungsauftrag</strong>, der einen Blueprint instanziiert.</p>
+<h2 id="inhalt">Inhalt</h2>
+<ul>
+<li>request_id</li>
+<li>blueprint_name</li>
+<li>payload (konkrete Werte)</li>
+<li>optionale Parameter</li>
+</ul>
+<h2 id="beziehung">Beziehung</h2>
+<ul>
+<li>Blueprint = Was wird gebaut</li>
+<li>Work Order = Dieses konkrete Teil wird gebaut</li>
+</ul>
+<hr />
+<h1 id="4-work-order-operations">⚙️ 4. Work Order Operations</h1>
+<h2 id="definition_2">Definition</h2>
+<p>Die einzelnen <strong>Arbeitsgänge</strong>, die zur Fertigung notwendig sind.</p>
+<h2 id="beispiele">Beispiele</h2>
+<ul>
+<li>ValidateOrder</li>
+<li>BuildPromptMaterial</li>
+<li>GenerateCandidate</li>
+<li>CheckOutputStructure</li>
+<li>ApplyFiles</li>
+<li>NormalizeCode</li>
+<li>RunLocalTests</li>
+<li>PrepareReviewPackage</li>
+</ul>
+<h2 id="wichtig_1">Wichtig</h2>
+<p>👉 Operations sind <strong>logische Arbeitsschritte</strong>, keine Implementierung</p>
+<hr />
+<h1 id="5-machine">🏗️ 5. Machine</h1>
+<h2 id="definition_3">Definition</h2>
+<p>Eine Machine ist eine <strong>Ausführungseinheit</strong>, die eine Operation durchführt.</p>
+<h2 id="beispiele_1">Beispiele</h2>
+<ul>
+<li>PromptBuilderMachine</li>
+<li>LLMExecutionMachine</li>
+<li>OutputCheckerMachine</li>
+<li>CodeFormatterMachine</li>
+<li>TestRunnerMachine</li>
+</ul>
+<h2 id="wichtig_2">Wichtig</h2>
+<ul>
+<li>Eine Operation kann von verschiedenen Maschinen ausgeführt werden</li>
+<li>Maschinen sind austauschbar</li>
+<li>Maschinen sind technisch, nicht fachlich</li>
+</ul>
+<hr />
+<h1 id="6-calibration-production-profile">🎛️ 6. Calibration (Production Profile)</h1>
+<h2 id="definition_4">Definition</h2>
+<p>Die <strong>Konfiguration und Einstellung der Maschinen</strong></p>
+<h2 id="beispiele_2">Beispiele</h2>
+<ul>
+<li>verwendetes LLM-Modell</li>
+<li>Prompt-Regeln</li>
+<li>Formatierungsregeln (Black, Ruff)</li>
+<li>Teststrategie</li>
+<li>Fehlerverhalten</li>
+<li>Retry-Strategien</li>
+</ul>
+<h2 id="wichtig_3">Wichtig</h2>
+<p>👉 Die Pipeline bleibt gleich – die Kalibrierung verändert das Verhalten</p>
+<hr />
+<h1 id="7-quality-assurance-qa">🧪 7. Quality Assurance (QA)</h1>
+<h2 id="definition_5">Definition</h2>
+<p>Eine Menge von <strong>Prüfstationen entlang des Prozesses</strong></p>
+<h2 id="beispiele_3">Beispiele</h2>
+<ul>
+<li>Output-Strukturprüfung</li>
+<li>Import-Prüfung</li>
+<li>Codeformatierung</li>
+<li>lokale Tests (pytest)</li>
+<li>spätere Pipeline-Checks</li>
+</ul>
+<h2 id="wichtig_4">Wichtig</h2>
+<p>👉 QA ist kein einzelner Schritt<br />
+👉 QA ist eine <strong>Schicht über mehrere Stationen</strong></p>
+<hr />
+<h1 id="8-lokales-system-pre-production">🧰 8. Lokales System (Pre-Production)</h1>
+<h2 id="aufgabe">Aufgabe</h2>
+<p>Das lokale Tool übernimmt:</p>
+<ul>
+<li>Erstellung von Work Orders</li>
+<li>Ableitung von Prompt &amp; Review</li>
+<li>Generierung von Code</li>
+<li>Strukturprüfung</li>
+<li>Anwendung von Dateien</li>
+<li>lokale Normalisierung (Linter/Formatter)</li>
+<li>lokale Tests</li>
+<li>Vorbereitung der Review-Daten</li>
+</ul>
+<h2 id="wichtig_5">Wichtig</h2>
+<p>👉 Das lokale System ist <strong>keine CI/CD-Pipeline</strong></p>
+<hr />
+<h1 id="9-cicd-pipeline-fertigungsstrae">🚀 9. CI/CD Pipeline (Fertigungsstraße)</h1>
+<h2 id="definition_6">Definition</h2>
+<p>Die CI/CD-Pipeline ist die <strong>echte Produktionsstraße</strong></p>
+<h2 id="verantwortung_1">Verantwortung</h2>
+<ul>
+<li>vollständige QA-Gates</li>
+<li>reproduzierbare Umgebung</li>
+<li>Integrationstests</li>
+<li>Policy Checks</li>
+<li>Build-Prozess</li>
+<li>Freigabe</li>
+</ul>
+<h2 id="wichtig_6">Wichtig</h2>
+<p>👉 Diese wird NICHT lokal nachgebaut</p>
+<hr />
+<h1 id="10-merge-request">📬 10. Merge Request</h1>
+<h2 id="definition_7">Definition</h2>
+<p>Die formale <strong>Übergabe des gefertigten Teils an die Prüfung</strong></p>
+<h2 id="bedeutung">Bedeutung</h2>
+<ul>
+<li>Teil wurde erzeugt</li>
+<li>lokale Checks wurden durchgeführt</li>
+<li>Review-Dokumentation liegt vor</li>
+</ul>
+<h2 id="industrielles-aquivalent">Industrielles Äquivalent</h2>
+<p>👉 Übergabe an Qualitätsprüfung / Abnahme</p>
+<hr />
+<h1 id="11-artifact-werkstuck">🧱 11. Artifact (Werkstück)</h1>
+<h2 id="definition_8">Definition</h2>
+<p>Das aktuell erzeugte oder bearbeitete Ergebnis</p>
+<h2 id="beispiele_4">Beispiele</h2>
+<ul>
+<li>generierter Code</li>
+<li>Testdateien</li>
+<li>Review-Dokumente</li>
+</ul>
+<h2 id="wichtig_7">Wichtig</h2>
+<p>👉 Das Artifact durchläuft alle Operations</p>
+<hr />
+<h1 id="12-production-context">🔄 12. Production Context</h1>
+<h2 id="definition_9">Definition</h2>
+<p>Der Zustand des Werkstücks während der Fertigung</p>
+<h2 id="inhalt_1">Inhalt</h2>
+<ul>
+<li>Work Order</li>
+<li>Blueprint</li>
+<li>erzeugte Dateien</li>
+<li>Zwischenstände</li>
+<li>Prüfergebnisse</li>
+<li>Logs</li>
+</ul>
+<h2 id="wichtig_8">Wichtig</h2>
+<p>👉 Der Context ist das <strong>zentrale Transportmedium zwischen Maschinen</strong></p>
+<hr />
+<h1 id="13-architekturgrenzen">🧭 13. Architekturgrenzen</h1>
+<h2 id="lokal-dieses-system">Lokal (dieses System)</h2>
+<p>✔ Code generieren<br />
+✔ lokal prüfen<br />
+✔ vorbereiten<br />
+✔ dokumentieren  </p>
+<h2 id="cicd-pipeline">CI/CD Pipeline</h2>
+<p>✔ validieren<br />
+✔ integrieren<br />
+✔ freigeben<br />
+✔ deployen  </p>
+<hr />
+<h1 id="14-wichtige-leitregeln">⚠️ 14. Wichtige Leitregeln</h1>
+<h2 id="nicht-tun">❌ Nicht tun</h2>
+<ul>
+<li>keine zweite CI/CD bauen</li>
+<li>keine Logik in Prompts verstecken</li>
+<li>keine impliziten Abhängigkeiten</li>
+</ul>
+<h2 id="tun">✅ Tun</h2>
+<ul>
+<li>klare Trennung von Verantwortung</li>
+<li>deterministische Verarbeitung</li>
+<li>explizite Verträge</li>
+<li>reproduzierbare Ergebnisse</li>
+</ul>
+<hr />
+<h1 id="15-zusammenfassung">🧠 15. Zusammenfassung</h1>
+<table>
+<thead>
+<tr>
+<th>Konzept</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blueprint</td>
+<td>Bauplan</td>
+</tr>
+<tr>
+<td>Work Order</td>
+<td>Auftrag</td>
+</tr>
+<tr>
+<td>Operation</td>
+<td>Arbeitsschritt</td>
+</tr>
+<tr>
+<td>Machine</td>
+<td>ausführende Einheit</td>
+</tr>
+<tr>
+<td>Calibration</td>
+<td>Einstellung</td>
+</tr>
+<tr>
+<td>QA</td>
+<td>Prüfstationen</td>
+</tr>
+<tr>
+<td>Artifact</td>
+<td>Werkstück</td>
+</tr>
+<tr>
+<td>Context</td>
+<td>Zustand des Werkstücks</td>
+</tr>
+<tr>
+<td>CI/CD Pipeline</td>
+<td>Fertigungsstraße</td>
+</tr>
+<tr>
+<td>Merge Request</td>
+<td>Übergabe zur Prüfung</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="nachster-schritt">🚀 Nächster Schritt</h1>
+<p>Auf Basis dieses Glossars wird nun:
+1. das Domain-Modell (Dataclasses) definiert
+2. die Produktionslinie (Operations + Machines) strukturiert
+3. der bestehende Code schrittweise darauf ausgerichtet</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../architecture/" class="btn btn-neutral float-left" title="Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../architecture/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
