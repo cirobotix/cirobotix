@@ -38,7 +38,7 @@ jobs:
         run: pytest
 
       - name: Run Bandit
-        run: bandit -r . -x tests,.venv,docs,site
+        run: bandit -r . -c bandit.yml
 
       - name: Run Vulture
         run: vulture core . --exclude tests/,.venv/,docs/,site/ --min-confidence 80
