@@ -45,7 +45,7 @@ jobs:
         run: ruff check .
 
       - name: Run unit tests
-        run: pytest
+        run: PYTHONPATH=. pytest
 
       - name: Run Bandit
         run: bandit -r . -c bandit.yml
