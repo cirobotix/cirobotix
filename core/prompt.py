@@ -3,33 +3,68 @@ from .context import ProductionContext
 
 class PromptBuilder:
     def run(self, context: ProductionContext) -> ProductionContext:
+        blueprint = context.blueprint
         payload = context.work_order.payload
         project = context.project
         work_order = context.work_order
 
-        methods = "\n".join(f"- {method}" for method in payload.get("methods", []))
         read_files = "\n".join(f"- {path}" for path in work_order.read_files) or "- none"
         writable_files = "\n".join(f"- {path}" for path in work_order.writable_files) or "- none"
         invariants = "\n".join(f"- {item}" for item in work_order.invariants) or "- none"
+        acceptance_criteria = (
+            "\n".join(f"- {item}" for item in work_order.acceptance_criteria) or "- none"
+        )
+        constraints = "\n".join(f"- {item}" for item in blueprint.constraints) or "- none"
+        quality_requirements = (
+            "\n".join(f"- {item}" for item in blueprint.quality_requirements) or "- none"
+        )
+        payload_lines = (
+            "\n".join(f"- {key}: {self._format_value(value)}" for key, value in payload.items())
+            or "- none"
+        )
+
+        output_file_blocks = "\n\n".join(
+            f"""### FILE: {path}
+```python
+# code here
+```"""
+            for path in work_order.writable_files
+        )
+
+        test_only_instruction = ""
+        if (
+            blueprint.component_type == "unit_test"
+            and "target_path" in payload
+            and payload["target_path"] not in work_order.writable_files
+        ):
+            test_only_instruction = (
+                "\n# Test-Only Rule\n"
+                "- This is a test-only request.\n"
+                "- Do not return production source files.\n"
+                f"- Do not return this read-only target file as output: {payload['target_path']}\n"
+            )
 
         context.prompt_text = f"""# Role
 You are an experienced Python engineer working inside an existing codebase.
 
 # Task
-Generate exactly two files:
-1. One Python source file
-2. One pytest test file
+Generate exactly the files declared in Writable Files.
+Do not return any additional files.
+Do not return read-only files.
+Do not include explanations outside the requested file blocks.
 
 # Work Order
 - Request ID: {work_order.request_id}
 - Blueprint: {work_order.blueprint_name}
+- Component Type: {blueprint.component_type}
 - Order Type: {work_order.order_type.value}
+- Goal: {work_order.goal}
 
 # Project Context
 - Project root: {project.root_path}
 - Pythonpath root: {project.pythonpath_root}
-- Source roots: {", ".join(project.source_roots)}
-- Test roots: {", ".join(project.test_roots)}
+- Source roots: {", ".join(project.source_roots) or "- none"}
+- Test roots: {", ".join(project.test_roots) or "- none"}
 
 # Existing Code Context
 {context.assembled_context or "No additional context provided."}
@@ -40,75 +75,50 @@ Generate exactly two files:
 # Writable Files
 {writable_files}
 
+# Blueprint Constraints
+{constraints}
+
+# Quality Requirements
+{quality_requirements}
+
 # Integration Invariants
 {invariants}
 
-# Source File Path
-{payload.get("target_path", "")}
+# Acceptance Criteria
+{acceptance_criteria}
 
-# Test File Path
-{payload.get("test_path", "")}
-
-# Class Name
-{payload.get("class_name", "")}
-
-# Responsibility
-{payload.get("responsibility", "")}
-
-# Required Methods
-{methods}
-
-# Behavioral Requirements
-- register(definition): {payload.get("definition_contract", "")}
-- get(name): {payload.get("get_behavior", "")}
-- list_names(): {payload.get("list_behavior", "")}
-
-# Constraints
-- Generate exactly one Python class in the source file
-- Do not create unrelated helper classes
-- Only modify files listed under Writable Files
-- Preserve compatibility with the existing import structure
-- Use type hints
-- Include a class docstring
-- The generated class MUST contain a class-level docstring
-- The docstring MUST be placed directly below the class declaration
-- Use triple quotes for the class docstring
-- The absence of a class docstring is considered a failure
-- Keep the implementation minimal and readable
-- Do not add external dependencies
-- Use pytest for tests
-- All modules must be importable relative to the configured Pythonpath root
-
-# Import Requirement
-- All referenced type hints must be properly imported
-- The source file must be valid Python and importable
-- Do not use Any unless it is explicitly imported from typing
-Use this exact import in the test file:
-from core.generated_registry import ArtifactRegistry
-
-# Test File Requirement
-The test file must import the pytest library.
-The test file must import the generated class using this exact import:
-from core.generated_registry import ArtifactRegistry
+# Payload
+{payload_lines}
+{test_only_instruction}
+# Output Rules
+- Return output blocks only for files listed under Writable Files.
+- Every writable file must be returned exactly once.
+- Do not return files from Read-Only Context Files.
+- Do not modify or return protected or undeclared files.
+- All generated Python modules must be importable relative to the configured Pythonpath root.
+- Use valid Python syntax.
+- Preserve compatibility with the existing import structure.
+- Do not add external dependencies unless explicitly required.
+- If the request is test-only, return only the test file blocks.
 
 # Final Verification Before Output
-Before returning the code, verify that:
-- The source file contains exactly one class named {payload.get("class_name", "")}
-- The class contains a docstring directly below the class declaration
-- The required methods are present
-- The test file imports pytest
-- The test file imports the generated class with the exact required import
-- Exactly two files are returned
-- The output strictly follows the requested format
+Before returning the result, verify that:
+- Only writable files are returned.
+- Every writable file has exactly one output block.
+- No read-only file is returned as output.
+- The result satisfies the goal, constraints, invariants, and acceptance criteria.
+- The output strictly follows the requested format.
 
 # Output Format
-Return only code.
-Use this exact structure:
+Return only code using this exact structure:
 
-### FILE: {payload.get("target_path", "")}
-```python
-# source code here
-FILE: {payload.get("test_path", "")}
-# test code here
+{output_file_blocks}
 """
         return context
+
+    def _format_value(self, value) -> str:
+        if isinstance(value, list):
+            if not value:
+                return "[]"
+            return "[" + ", ".join(str(item) for item in value) + "]"
+        return str(value)

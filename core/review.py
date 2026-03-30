@@ -3,46 +3,61 @@ from .context import ProductionContext
 
 class ReviewBuilder:
     def run(self, context: ProductionContext) -> ProductionContext:
-        payload = context.work_order.payload
-        methods = "\n".join(f"- {method}" for method in payload["methods"])
+        work_order = context.work_order
+        payload = work_order.payload
+
+        payload_lines = "\n".join(
+            f"- {key}: {self._format_value(value)}" for key, value in payload.items()
+        )
+
+        acceptance_lines = "\n".join(
+            f"- {criterion}" for criterion in work_order.acceptance_criteria
+        )
+
+        invariant_lines = "\n".join(f"- {invariant}" for invariant in work_order.invariants)
+
+        read_file_lines = "\n".join(f"- {path}" for path in work_order.read_files)
+        writable_file_lines = "\n".join(f"- {path}" for path in work_order.writable_files)
 
         context.review_text = f"""# Review Summary
 
 ## Request ID
-{context.work_order.request_id}
+{work_order.request_id}
 
 ## Blueprint
-{context.work_order.blueprint_name}
+{work_order.blueprint_name}
 
-## Class Name
-{payload["class_name"]}
+## Goal
+{work_order.goal}
 
-## Source Path
-{payload["target_path"]}
+## Read Files
+{read_file_lines or "- None"}
 
-## Test Path
-{payload["test_path"]}
+## Writable Files
+{writable_file_lines or "- None"}
 
-## Responsibility
-{payload["responsibility"]}
+## Invariants
+{invariant_lines or "- None"}
 
-## Expected Methods
-{methods}
+## Acceptance Criteria
+{acceptance_lines or "- None"}
 
-## Behavioral Rules
-- register(definition): {payload["definition_contract"]}
-- get(name): {payload["get_behavior"]}
-- list_names(): {payload["list_behavior"]}
+## Payload
+{payload_lines or "- None"}
 
 ## Review Checklist
-- Does the source file contain exactly one class?
-- Are all required methods present?
-- Does register validate definition.name correctly?
-- Does get raise KeyError for unknown names?
-- Does list_names return sorted names?
-- Are type hints included?
-- Is a class docstring included?
-- Is the pytest file at the exact requested path?
-- Was unrelated functionality avoided?
+- Does the result satisfy the declared goal?
+- Are only declared writable files modified?
+- Are all acceptance criteria addressed?
+- Are all invariants respected?
+- Does the output match the selected blueprint?
 """
+
         return context
+
+    def _format_value(self, value) -> str:
+        if isinstance(value, list):
+            if not value:
+                return "[]"
+            return "[" + ", ".join(str(item) for item in value) + "]"
+        return str(value)

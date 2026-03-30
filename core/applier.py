@@ -27,8 +27,13 @@ class OutputApplier:
         return context
 
     def _extract_files(self, content: str) -> dict[str, str]:
-        pattern = r"### FILE: (.+?)\n```python\n(.*?)```"
-        matches = re.findall(pattern, content, re.DOTALL)
+        pattern = (
+            r"(?ms)^### FILE:\s*(.+?)\n"
+            r"^```[a-zA-Z0-9_-]*\n"
+            r"(.*?)"
+            r"^```[ \t]*$"
+        )
+        matches = re.findall(pattern, content)
 
         files: dict[str, str] = {}
         for path, code in matches:
