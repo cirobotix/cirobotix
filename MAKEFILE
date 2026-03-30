@@ -1,0 +1,51 @@
+PYTHON ?= python
+MAIN := main.py
+
+# Default paths
+TASK ?= tasks/test_output_checker.yaml
+REQUEST_ID ?= test_output_checker
+REQUEST_DIR := .codegen/requests/$(REQUEST_ID)
+PROPOSAL := $(REQUEST_DIR)/proposal.yaml
+WORK_ORDER := $(REQUEST_DIR)/task.yaml
+PROJECT ?= config/projects/local_project.yaml
+PROFILE ?= default
+
+.PHONY: help ai-draft promote generate workflow
+
+help:
+	@echo "Available targets:"
+	@echo ""
+	@echo "  make ai-draft TASK=tasks/<task>.yaml [PROFILE=default] [PROJECT=config/projects/local_project.yaml]"
+	@echo "      Creates an AI-generated WorkOrder proposal from an Atomic Task YAML."
+	@echo "      Output: .codegen/requests/<request_id>/proposal.yaml"
+	@echo ""
+	@echo "  make promote REQUEST_ID=<request_id> [PROJECT=config/projects/local_project.yaml]"
+	@echo "      Validates and promotes a proposal.yaml into a runnable task.yaml."
+	@echo "      Output: .codegen/requests/<request_id>/task.yaml and review.md"
+	@echo ""
+	@echo "  make generate REQUEST_ID=<request_id> [PROJECT=config/projects/local_project.yaml]"
+	@echo "      Executes the production line using the promoted task.yaml."
+	@echo "      Output: prompt.md, response.md, generated files, formatter/test run"
+	@echo ""
+	@echo "  make workflow TASK=tasks/<task>.yaml REQUEST_ID=<request_id>"
+	@echo "      Runs the full workflow: ai-draft -> promote -> generate"
+	@echo ""
+	@echo "Examples:"
+	@echo "  make ai-draft TASK=tasks/test_output_checker.yaml"
+	@echo "  make promote REQUEST_ID=test_output_checker"
+	@echo "  make generate REQUEST_ID=test_output_checker"
+	@echo "  make workflow TASK=tasks/test_output_checker.yaml REQUEST_ID=test_output_checker"
+
+ai-draft:
+	@echo "==> Creating AI WorkOrder proposal from Atomic Task: $(TASK)"
+	$(PYTHON) $(MAIN) command=ai-draft-workorder task=$(TASK) profile=$(PROFILE) project=$(PROJECT)
+
+promote:
+	@echo "==> Promoting proposal to validated WorkOrder: $(PROPOSAL)"
+	$(PYTHON) $(MAIN) command=promote-workorder proposal=$(PROPOSAL) project=$(PROJECT)
+
+generate:
+	@echo "==> Generating code from WorkOrder: $(WORK_ORDER)"
+	$(PYTHON) $(MAIN) command=generate work_order=$(WORK_ORDER) project=$(PROJECT)
+
+workflow: ai-draft promote generate
