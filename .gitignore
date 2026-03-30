@@ -18,3 +18,4 @@ venv/
 .ruff_cache
 secret.txt
 project_dump.txt
+export.py
