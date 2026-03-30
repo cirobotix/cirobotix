@@ -3,22 +3,22 @@ from pathlib import Path
 
 from .atomic_task_loader import AtomicTaskLoader
 from .blueprints.catalog import register_blueprints
+from .context import ProductionContext
 from .context_assembler import ContextAssembler
 from .context_dependency_resolver import ContextDependencyResolver
+from .profile import ProductionProfile
 from .profile_loader import ProfileLoader
 from .project_loader import ProjectLoader
 from .registry import Registry
+from .review import ReviewBuilder
 from .target_inspector import TargetInspector
+from .validator import Validator
 from .work_order import WorkOrder
+from .work_order_loader import WorkOrderLoader
 from .work_order_proposal_executor import WorkOrderProposalExecutor
 from .work_order_proposal_prompt_builder import WorkOrderProposalPromptBuilder
 from .work_order_proposal_writer import WorkOrderProposalWriter
 from .work_order_type import WorkOrderType
-from .context import ProductionContext
-from .profile import ProductionProfile
-from .review import ReviewBuilder
-from .validator import Validator
-from .work_order_loader import WorkOrderLoader
 
 
 class WorkOrderProposalService:
