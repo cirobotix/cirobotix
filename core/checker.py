@@ -15,23 +15,28 @@ class OutputChecker:
         content = response_path.read_text(encoding="utf-8")
         files = self._extract_files(content)
 
-        errors = []
+        errors: list[str] = []
 
-        source_path = "core/generated_registry.py"
-        test_path = "tests/core/test_generated_registry.py"
+        expected_files = set(context.work_order.writable_files)
+        returned_files = set(files.keys())
 
-        if source_path not in files:
-            errors.append(f"Missing source file block: {source_path}")
+        missing_files = expected_files - returned_files
+        unexpected_files = returned_files - expected_files
 
-        if test_path not in files:
-            errors.append(f"Missing test file block: {test_path}")
+        for path in sorted(missing_files):
+            errors.append(f"Missing output file block: {path}")
 
-        if not errors:
-            source_code = files[source_path]
-            test_code = files[test_path]
+        for path in sorted(unexpected_files):
+            errors.append(f"Unexpected output file block: {path}")
 
-            errors.extend(self._check_source_file(source_code))
-            errors.extend(self._check_test_file(test_code))
+        for path in sorted(expected_files & returned_files):
+            code = files[path]
+
+            if not code.strip():
+                errors.append(f"Empty output block for file: {path}")
+                continue
+
+            errors.extend(self._check_generic_file(path, code))
 
         if errors:
             print("\n❌ CHECK FAILED:")
@@ -43,7 +48,7 @@ class OutputChecker:
         return context
 
     def _extract_files(self, content: str) -> dict[str, str]:
-        pattern = r"### FILE: (.+?)\n```python\n(.*?)```"
+        pattern = r"### FILE: (.+?)\n```(?:python)?\n(.*?)```"
         matches = re.findall(pattern, content, re.DOTALL)
 
         files: dict[str, str] = {}
@@ -52,37 +57,21 @@ class OutputChecker:
 
         return files
 
-    def _check_source_file(self, source_code: str) -> list[str]:
+    def _check_generic_file(self, path: str, code: str) -> list[str]:
         errors: list[str] = []
 
-        class_matches = re.findall(r"class\s+(\w+)\s*:", source_code)
-        if len(class_matches) != 1:
-            errors.append(f"Expected exactly one class in source file, found {len(class_matches)}")
-        elif class_matches[0] != "ArtifactRegistry":
-            errors.append(f"Expected class name 'ArtifactRegistry', found '{class_matches[0]}'")
-
-        required_methods = ["register", "get", "list_names"]
-        for method in required_methods:
-            if f"def {method}" not in source_code:
-                errors.append(f"Missing method in source file: {method}")
-
-        if '"""' not in source_code:
-            errors.append("Missing docstring in source file")
+        if path.endswith(".py"):
+            errors.extend(self._check_python_file(path, code))
 
         return errors
 
-    def _check_test_file(self, test_code: str) -> list[str]:
+    def _check_python_file(self, path: str, code: str) -> list[str]:
         errors: list[str] = []
 
-        if "import pytest" not in test_code:
-            errors.append("Missing pytest import in test file")
+        if "```" in code:
+            errors.append(f"Nested code fence found in file block: {path}")
 
-        expected_import = "from core.generated_registry import ArtifactRegistry"
-        if expected_import not in test_code:
-            errors.append(f"Missing expected source import in test file: {expected_import}")
-
-        test_functions = re.findall(r"def\s+(test_\w+)\s*\(", test_code)
-        if len(test_functions) < 3:
-            errors.append(f"Expected at least 3 test functions, found {len(test_functions)}")
+        if not code.strip():
+            errors.append(f"Python file block is empty: {path}")
 
         return errors
