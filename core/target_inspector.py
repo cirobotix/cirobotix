@@ -35,9 +35,7 @@ class TargetInspector:
             class_node = self._find_class(tree, target_name)
             method_analyses = self._extract_method_analyses(class_node)
             public_methods = [
-                method.name
-                for method in method_analyses
-                if not method.name.startswith("_")
+                method.name for method in method_analyses if not method.name.startswith("_")
             ]
             referenced_symbols = self._collect_referenced_symbols_from_methods(method_analyses)
 
@@ -111,10 +109,10 @@ class TargetInspector:
         return resolved
 
     def _build_candidate_paths(
-            self,
-            project: ProjectContext,
-            item: ImportAnalysis,
-            current_file_path: str,
+        self,
+        project: ProjectContext,
+        item: ImportAnalysis,
+        current_file_path: str,
     ) -> list[str]:
         candidates: list[str] = []
 
@@ -182,8 +180,7 @@ class TargetInspector:
 
         return type_names
 
-    def _extract_return_type_name(self, node: ast.FunctionDef) -> Optional[
-        str]:
+    def _extract_return_type_name(self, node: ast.FunctionDef) -> Optional[str]:
         if node.returns is None:
             return None
         return self._annotation_to_name(node.returns)
@@ -244,10 +241,10 @@ class TargetInspector:
         return symbols
 
     def _build_relative_candidate_paths(
-            self,
-            *,
-            item: ImportAnalysis,
-            current_file_path: str,
+        self,
+        *,
+        item: ImportAnalysis,
+        current_file_path: str,
     ) -> list[str]:
         candidates: list[str] = []
 
@@ -263,8 +260,7 @@ class TargetInspector:
             candidates.append(str(base_dir / module_path / "__init__.py"))
 
             for imported_name in item.imported_names:
-                candidates.append(
-                    str(base_dir / module_path / f"{imported_name}.py"))
+                candidates.append(str(base_dir / module_path / f"{imported_name}.py"))
         else:
             for imported_name in item.imported_names:
                 candidates.append(str(base_dir / f"{imported_name}.py"))
