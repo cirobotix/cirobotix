@@ -12,38 +12,34 @@ class WorkOrderProposalPromptBuilder:
         suggested_read_files: list[str],
         suggested_writable_files: list[str],
     ) -> str:
-        required_fields = "\n".join(
-            f"- {field_name}" for field_name in blueprint.required_fields
-        ) or "- none"
+        required_fields = (
+            "\n".join(f"- {field_name}" for field_name in blueprint.required_fields) or "- none"
+        )
 
-        constraints = "\n".join(
-            f"- {item}" for item in blueprint.constraints
-        ) or "- none"
+        constraints = "\n".join(f"- {item}" for item in blueprint.constraints) or "- none"
 
-        quality_requirements = "\n".join(
-            f"- {item}" for item in blueprint.quality_requirements
-        ) or "- none"
+        quality_requirements = (
+            "\n".join(f"- {item}" for item in blueprint.quality_requirements) or "- none"
+        )
 
-        default_invariants = "\n".join(
-            f"- {item}" for item in blueprint.default_invariants
-        ) or "- none"
+        default_invariants = (
+            "\n".join(f"- {item}" for item in blueprint.default_invariants) or "- none"
+        )
 
-        task_inputs = "\n".join(
-            f"- {key}: {self._format_value(value)}"
-            for key, value in task.inputs.items()
-        ) or "- none"
+        task_inputs = (
+            "\n".join(f"- {key}: {self._format_value(value)}" for key, value in task.inputs.items())
+            or "- none"
+        )
 
-        task_acceptance = "\n".join(
-            f"- {item}" for item in task.acceptance_criteria
-        ) or "- none"
+        task_acceptance = "\n".join(f"- {item}" for item in task.acceptance_criteria) or "- none"
 
-        suggested_read_files_text = "\n".join(
-            f"- {path}" for path in suggested_read_files
-        ) or "- none"
+        suggested_read_files_text = (
+            "\n".join(f"- {path}" for path in suggested_read_files) or "- none"
+        )
 
-        suggested_writable_files_text = "\n".join(
-            f"- {path}" for path in suggested_writable_files
-        ) or "- none"
+        suggested_writable_files_text = (
+            "\n".join(f"- {path}" for path in suggested_writable_files) or "- none"
+        )
 
         return f"""# Role
 You are a senior software architecture assistant.
