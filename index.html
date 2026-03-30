@@ -45,6 +45,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#quality-gates">Quality Gates</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#workorder-workflow">WorkOrder Workflow</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -89,6 +91,32 @@
 <li>vulture</li>
 <li>mkdocs</li>
 </ul>
+<h2 id="workorder-workflow">WorkOrder Workflow</h2>
+<p>The current generation workflow is split into three explicit steps:</p>
+<ol>
+<li><strong>AI Draft</strong></li>
+<li>Command: <code>make ai-draft TASK=tasks/&lt;task&gt;.yaml</code></li>
+<li>
+<p>Creates an AI-generated <code>proposal.yaml</code> from an Atomic Task.</p>
+</li>
+<li>
+<p><strong>Promote</strong></p>
+</li>
+<li>Command: <code>make promote REQUEST_ID=&lt;request_id&gt;</code></li>
+<li>
+<p>Validates and promotes <code>proposal.yaml</code> to <code>task.yaml</code>.</p>
+</li>
+<li>
+<p><strong>Generate</strong></p>
+</li>
+<li>Command: <code>make generate REQUEST_ID=&lt;request_id&gt;</code></li>
+<li>Runs the production line for the promoted WorkOrder.</li>
+</ol>
+<p>Example:</p>
+<p>```bash
+make ai-draft TASK=tasks/test_output_checker.yaml
+make promote REQUEST_ID=test_output_checker
+make generate REQUEST_ID=test_output_checker</p>
               
             </div>
           </div><footer>
@@ -137,5 +165,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2026-03-30 15:43:44.477645+00:00
+Build Date UTC : 2026-03-30 15:45:59.598859+00:00
 -->
