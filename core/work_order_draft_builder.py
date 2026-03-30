@@ -116,8 +116,7 @@ class WorkOrderDraftBuilder:
                 [
                     "Return only files listed in writable_files.",
                     "Never return files from read_files.",
-                    "Do not rewrite existing source files unless they are "
-                    "explicitly writable.",
+                    "Do not rewrite existing source files unless they are explicitly writable.",
                     f"For this request, exactly one file block must be "
                     f"returned: {request.test_path}",
                 ]
