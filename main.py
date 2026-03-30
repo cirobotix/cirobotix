@@ -20,7 +20,7 @@ from core.writer import Writer
 def run() -> None:
 
     project = ProjectLoader().load("config/projects/local_project.yaml")
-    work_order = WorkOrderLoader().load("work_orders/applier_unit_test.yaml")
+    work_order = WorkOrderLoader().load("work_orders/blueprint_unit_test.yaml")
     profile = ProfileLoader().load(work_order.profile_name)
 
     registry = Registry()
