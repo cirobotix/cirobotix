@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from core.blueprints.python_pytest_unit_test import build_python_pytest_unit_test_blueprint
 from core.context_dependency_resolver import ContextDependencyResolver
 from core.project_context import ProjectContext
@@ -93,13 +95,10 @@ def test_build_pytest_unit_test_work_order_requires_test_path():
         test_path=None,
     )
 
-    try:
+    with pytest.raises(ValueError, match="test_path is required"):
         builder.build(
             request=request,
             blueprint=blueprint,
             analysis=analysis,
             dependency_resolution=resolution,
         )
-        assert False, "Expected ValueError"
-    except ValueError as exc:
-        assert "test_path is required" in str(exc)
