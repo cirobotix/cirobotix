@@ -1,8 +1,8 @@
 from typing import Optional
 
+from .context_dependency import ContextDependency, ContextDependencyResolution
 from .project_context import ProjectContext
 from .target_analysis import TargetAnalysis
-from .context_dependency import ContextDependency, ContextDependencyResolution
 
 
 class ContextDependencyResolver:
@@ -45,12 +45,8 @@ class ContextDependencyResolver:
                 priority="helpful",
             )
 
-        required_read_files = [
-            item.path for item in dependencies if item.priority == "required"
-        ]
-        helpful_read_files = [
-            item.path for item in dependencies if item.priority == "helpful"
-        ]
+        required_read_files = [item.path for item in dependencies if item.priority == "required"]
+        helpful_read_files = [item.path for item in dependencies if item.priority == "helpful"]
 
         return ContextDependencyResolution(
             required_read_files=required_read_files,
@@ -82,9 +78,9 @@ class ContextDependencyResolver:
         )
 
     def _infer_path_from_symbol(
-            self,
-            symbol: str,
-            project: ProjectContext,
+        self,
+        symbol: str,
+        project: ProjectContext,
     ) -> Optional[str]:
         symbol = symbol.strip()
         if not symbol:

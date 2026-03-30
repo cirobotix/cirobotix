@@ -12,8 +12,7 @@ class Validator:
         blueprint = self.registry.get(context.work_order.blueprint_name)
 
         self._validate_work_order_structure(context)
-        self._validate_required_payload_fields(blueprint,
-                                               context.work_order.payload)
+        self._validate_required_payload_fields(blueprint, context.work_order.payload)
         self._validate_project_context(context)
 
         if blueprint.payload_validator is not None:
