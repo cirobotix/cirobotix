@@ -17,7 +17,7 @@ def build_python_pytest_unit_test_blueprint() -> Blueprint:
             "error_behavior",
         ],
         description="A reusable blueprint for a bounded pytest-based unit "
-                    "test module for a Python component.",
+        "test module for a Python component.",
         output_files=[
             "test_file",
         ],
