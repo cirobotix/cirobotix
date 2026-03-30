@@ -18,9 +18,10 @@ class PromptBuilder:
         quality_requirements = (
             "\n".join(f"- {item}" for item in blueprint.quality_requirements) or "- none"
         )
-        payload_lines = "\n".join(
-            f"- {key}: {self._format_value(value)}" for key, value in payload.items()
-        ) or "- none"
+        payload_lines = (
+            "\n".join(f"- {key}: {self._format_value(value)}" for key, value in payload.items())
+            or "- none"
+        )
 
         output_file_blocks = "\n\n".join(
             f"""### FILE: {path}

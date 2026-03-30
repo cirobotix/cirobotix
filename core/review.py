@@ -14,9 +14,7 @@ class ReviewBuilder:
             f"- {criterion}" for criterion in work_order.acceptance_criteria
         )
 
-        invariant_lines = "\n".join(
-            f"- {invariant}" for invariant in work_order.invariants
-        )
+        invariant_lines = "\n".join(f"- {invariant}" for invariant in work_order.invariants)
 
         read_file_lines = "\n".join(f"- {path}" for path in work_order.read_files)
         writable_file_lines = "\n".join(f"- {path}" for path in work_order.writable_files)
