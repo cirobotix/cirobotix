@@ -1,11 +1,19 @@
-import importlib
+import pytest
+
+from core.models.blueprint import Blueprint
+from core.registry.registry import Registry
 
 
-def test_import_registry_module():
-    module = importlib.import_module("core.registry.registry")
-    assert module is not None
+def test_registry_register_get_and_duplicate_guard():
+    registry = Registry()
+    blueprint = Blueprint(name="bp", component_type="x", required_fields=[])
 
+    registry.register(blueprint)
 
-def test_registry_exports_expected_symbols():
-    module = importlib.import_module("core.registry.registry")
-    assert hasattr(module, "Registry")
+    assert registry.get("bp") is blueprint
+
+    with pytest.raises(ValueError):
+        registry.register(blueprint)
+
+    with pytest.raises(ValueError):
+        registry.get("missing")

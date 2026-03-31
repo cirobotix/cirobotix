@@ -1,11 +1,9 @@
-import importlib
+from core.writers.work_order_proposal_writer import WorkOrderProposalWriter
 
 
-def test_import_work_order_proposal_writer_module():
-    module = importlib.import_module("core.writers.work_order_proposal_writer")
-    assert module is not None
+def test_proposal_writer_writes_file(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    path = WorkOrderProposalWriter().write(request_id="r", proposal_text="x")
 
-
-def test_work_order_proposal_writer_exports_expected_symbols():
-    module = importlib.import_module("core.writers.work_order_proposal_writer")
-    assert hasattr(module, "WorkOrderProposalWriter")
+    assert path.exists()
+    assert path.read_text(encoding="utf-8") == "x\n"
