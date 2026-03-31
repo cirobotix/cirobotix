@@ -86,8 +86,6 @@ def run_generate(args: dict) -> None:
     print_step_results(context.step_results)
 
 
-
-
 def _parse_bool(args: dict, key: str, default: bool = False) -> bool:
     raw_value = args.get(key)
     if raw_value is None:
@@ -124,27 +122,19 @@ def main() -> None:
     if not command:
         raise ValueError("Missing required argument: command")
 
-    if command == "draft":
-        run_draft(args)
-        return
+    handlers = {
+        "draft": run_draft,
+        "ai-draft-workorder": run_ai_draft_workorder,
+        "promote-workorder": run_promote_workorder,
+        "generate": run_generate,
+        "init": run_init,
+    }
 
-    if command == "ai-draft-workorder":
-        run_ai_draft_workorder(args)
-        return
+    handler = handlers.get(command)
+    if not handler:
+        raise ValueError(f"Unknown command: {command}")
 
-    if command == "promote-workorder":
-        run_promote_workorder(args)
-        return
-
-    if command == "generate":
-        run_generate(args)
-        return
-
-    if command == "init":
-        run_init(args)
-        return
-
-    raise ValueError(f"Unknown command: {command}")
+    handler(args)
 
 
 if __name__ == "__main__":
