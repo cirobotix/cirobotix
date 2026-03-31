@@ -1,5 +1,3 @@
-# Legacy-Dokumentation (Archiv)
+# Legacy Notes
 
-Die bisherige Dokumentation wurde für den strukturierten Neuaufbau archiviert.
-
-Hinweis: Inhalte können veraltet sein und werden schrittweise überarbeitet.
+Archivbereich für ältere Dokumentationsinhalte.

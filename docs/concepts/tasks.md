@@ -1,22 +1,23 @@
 # Was ist ein Task?
 
-Ein Task ist die konkrete Arbeitsbeschreibung für cirobotix und liegt als YAML-Datei vor (z. B. in `tasks/`).
-
-## Typische Felder
-
-- `task_id`
-- `blueprint_name`
-- `title`
-- `description`
-- `inputs`
-- `acceptance_criteria`
+Ein Task ist eine YAML-Datei mit einer konkreten Arbeitsanweisung für cirobotix.
 
 ## Beispiel
 
-Siehe:
+```yaml
+task_id: test_output_checker
+blueprint_name: python_pytest_unit_test
+title: Create unit tests for OutputChecker
+```
 
-- `tasks/test_output_checker.yaml`
+## Typische Bestandteile
 
-## Ziel
+- `task_id`: Eindeutige Kennung
+- `blueprint_name`: Welcher Blueprint angewendet wird
+- `title` / `description`: Fachliche Beschreibung
+- `inputs`: Zielartefakte und Parameter
+- `acceptance_criteria`: Konkrete Erfolgskriterien
 
-Ein Task beschreibt **was** erzeugt oder geprüft werden soll, inklusive klarer Akzeptanzkriterien.
+## Quelle im Repository
+
+Ein Beispiel liegt unter `tasks/test_output_checker.yaml`.

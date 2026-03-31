@@ -1,24 +1,7 @@
 # Quickstart
 
-Dieser Quickstart zeigt den typischen Start-Flow mit cirobotix.
+Kurzer Ablauf für den schnellen Einstieg:
 
-## 1) Projekt-Skelett initialisieren
-
-```bash
-cirobotix command=init path=. force=false
-```
-
-Erwartetes Ergebnis:
-
-- `.codegen/`
-- `tasks/`
-
-## 2) Beispiel-Task prüfen
-
-```bash
-cat tasks/test_output_checker.yaml
-```
-
-## 3) Weiterer Workflow
-
-Die nachfolgenden Schritte (`draft`, `ai-draft-workorder`, `promote-workorder`, `generate`) werden in der CLI-Referenz beschrieben.
+1. Installation durchführen (`getting-started/installation.md`)
+2. Workflow ausführen (`getting-started/running.md`)
+3. Task-Struktur prüfen (`concepts/tasks.md`)

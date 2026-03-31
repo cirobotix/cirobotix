@@ -1,11 +1,9 @@
 # Architektur – Komponenten
 
-> Skelettseite: detaillierte Komponentenbeschreibung folgt.
+Diese Seite beschreibt die Hauptkomponenten des Systems auf hoher Ebene.
 
-Geplante Inhalte:
-
-- CLI / Einstiegspunkt
-- Service-Schicht
-- Modelle
-- Loader/Writer
-- Pipeline-Machines
+- CLI / Einstieg
+- Services
+- Models
+- Loaders & Writers
+- Pipeline-Schritte

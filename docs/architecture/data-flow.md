@@ -1,11 +1,9 @@
 # Architektur – Datenfluss
 
-> Skelettseite: vollständiger Datenfluss folgt.
+Diese Seite dokumentiert den geplanten Datenfluss von Task zu erzeugten Artefakten.
 
-Geplante Inhalte:
-
-- Task-Eingang
+- Task-Ingest
 - Context-Aufbau
-- Prompt/Execution
-- Validierung & Anwendung
-- Ergebnisartefakte
+- Generierung
+- Validierung
+- Anwendung

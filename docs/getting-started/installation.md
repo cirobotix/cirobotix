@@ -4,23 +4,30 @@
 
 - Python 3.9+
 - `pip`
+- `make`
 
-## Variante 1: Installation direkt aus GitHub
-
-```bash
-pip install "git+https://github.com/cirobotix/cirobotix.git"
-```
-
-## Variante 2: Lokale Entwicklung
+## Repository klonen
 
 ```bash
 git clone https://github.com/cirobotix/cirobotix.git
 cd cirobotix
-pip install -e .
 ```
 
-## Verifikation
+## Abhängigkeiten installieren
 
 ```bash
-cirobotix command=init path=. dry_run=true
+pip install -r requirements.txt
 ```
+
+## Optional: virtuelle Umgebung
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Installation als Paket (Roadmap)
+
+Eine direkte Paketinstallation über `pip install cirobotix` ist als nächster Schritt geplant.
+Bis dahin ist der empfohlene Weg die Nutzung über das Repository.

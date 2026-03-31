@@ -1,24 +1,22 @@
-# CLI Referenz
+# CLI & Befehle
 
-Aktueller Aufrufstil basiert auf `key=value`-Argumenten.
+Aktuell wird cirobotix primär über `make`-Targets bedient.
 
-## Befehl: `init`
+## Verfügbare Hauptbefehle
 
-```bash
-cirobotix command=init path=. dry_run=true
-```
+- `make ai-draft TASK=...`
+- `make promote REQUEST_ID=...`
+- `make generate REQUEST_ID=...`
 
-Parameter:
+## Qualitätsbefehle
 
-- `path` (optional, default `.`)
-- `force` (`true|false`, optional)
-- `dry_run` (`true|false`, optional)
+- `pytest`
+- `ruff check .`
+- `bandit -r . -c bandit.yml`
+- `vulture core . --exclude tests/,.venv/,docs/,site/ --min-confidence 80`
+- `mkdocs build --strict`
 
-## Weitere Befehle
+## Hinweise
 
-- `command=draft`
-- `command=ai-draft-workorder`
-- `command=promote-workorder`
-- `command=generate`
-
-> Detaillierte Parameter und Beispiele werden in den nächsten Doku-PRs ergänzt.
+- Nutze stabile, sprechende `REQUEST_ID`s.
+- Halte `tasks/*.yaml` klein und fokussiert.

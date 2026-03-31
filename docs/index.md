@@ -1,18 +1,17 @@
 # cirobotix Dokumentation
 
-Willkommen zur cirobotix-Dokumentation.
+Willkommen zur Nutzer-Dokumentation von **cirobotix**.
 
-Diese Doku wird als neue, klare Struktur aufgebaut und deckt schrittweise ab:
+## Was du hier findest
 
-- Installation
-- Ausführung / CLI
-- Task-Modell
-- Architektur
+- Installation & Setup
+- Ausführen der Pipeline
+- Verständnis des Task-Formats
+- Architektur-Grundlagen
 
-## Empfohlener Einstieg
+## Schnellstart
 
 1. [Installation](getting-started/installation.md)
-2. [Quickstart](getting-started/quickstart.md)
-3. [CLI Referenz](usage/cli.md)
-4. [Task-Konzept](concepts/tasks.md)
-5. [Architektur-Überblick](architecture/overview.md)
+2. [Projekt ausführen](getting-started/running.md)
+3. [Task-Konzept](concepts/tasks.md)
+4. [CLI & Befehle](usage/cli.md)
