@@ -69,6 +69,18 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Components</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-cli-schicht">1) CLI-Schicht</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-service-schicht">2) Service-Schicht</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-registry-blueprints">3) Registry &amp; Blueprints</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-loader-writer">4) Loader / Writer</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-pipeline-machines">5) Pipeline-Machines</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#6-domain-modelle">6) Domain-Modelle</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../data-flow/">Data Flow</a>
@@ -104,14 +116,48 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="architektur-komponenten">Architektur – Komponenten</h1>
-<p>Diese Seite beschreibt die Hauptkomponenten des Systems auf hoher Ebene.</p>
+<h2 id="1-cli-schicht">1) CLI-Schicht</h2>
+<p>Die CLI ist der Prozess-Einstieg und verteilt Befehle auf Services.</p>
+<p>Verantwortung:
+- Argumente lesen
+- Kommandos auflösen
+- Ergebnisse für den Nutzer ausgeben</p>
+<h2 id="2-service-schicht">2) Service-Schicht</h2>
+<p>Die Service-Schicht koordiniert Business-Abläufe und baut die Pipeline zusammen.</p>
+<p>Wichtige Services:
+- <code>WorkOrderCliService</code> (Draft/Generate)
+- <code>WorkOrderProposalService</code> (AI-Proposal + Promotion)</p>
+<h2 id="3-registry-blueprints">3) Registry &amp; Blueprints</h2>
+<p>Blueprints werden in einer Registry registriert und anhand des Namens aufgelöst.
+Dadurch kann die Pipeline mit unterschiedlichen Blueprint-Typen arbeiten, ohne die Laufzeitlogik zu ändern.</p>
+<h2 id="4-loader-writer">4) Loader / Writer</h2>
 <ul>
-<li>CLI / Einstieg</li>
-<li>Services</li>
-<li>Models</li>
-<li>Loaders &amp; Writers</li>
-<li>Pipeline-Schritte</li>
+<li><strong>Loader</strong> laden Konfiguration, Profile, Tasks und Projektinformationen.</li>
+<li><strong>Writer</strong> schreiben WorkOrder-, Review- und Runtime-Artefakte.</li>
 </ul>
+<p>Diese Trennung macht I/O explizit und testbar.</p>
+<h2 id="5-pipeline-machines">5) Pipeline-Machines</h2>
+<p>Die <code>ProductionLine</code> verarbeitet eine Liste von Machines in fester Reihenfolge.</p>
+<p>Beispiele in der Standardreihenfolge:</p>
+<ol>
+<li><code>Validator</code></li>
+<li><code>ContextAssembler</code></li>
+<li><code>PromptBuilder</code></li>
+<li><code>ReviewBuilder</code></li>
+<li><code>WorkOrderCliRuntimeWriter</code></li>
+<li><code>Executor</code></li>
+<li><code>OutputChecker</code></li>
+<li><code>OutputApplier</code></li>
+<li><code>Formatter</code></li>
+<li><code>TestRunner</code></li>
+</ol>
+<h2 id="6-domain-modelle">6) Domain-Modelle</h2>
+<p>Kernmodelle (<code>core/models</code>) bilden den Zustand und die Verträge der Pipeline:
+- <code>WorkOrder</code>
+- <code>ProductionContext</code>
+- <code>ProductionProfile</code>
+- <code>StepResult</code></p>
+<p>Sie bilden den stabilen Austausch zwischen Services und Machines.</p>
               
             </div>
           </div><footer>

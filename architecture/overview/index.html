@@ -67,6 +67,16 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Overview</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#zielbild">Zielbild</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#leitprinzipien">Leitprinzipien</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#systemgrenzen">Systemgrenzen</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kernobjekte">Kernobjekte</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#laufzeitfluss-high-level">Laufzeitfluss (high level)</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../components/">Components</a>
@@ -104,12 +114,38 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="architektur-uberblick">Architektur – Überblick</h1>
-<p>Die Architektur-Dokumentation wird schrittweise ausgebaut.</p>
+<h2 id="zielbild">Zielbild</h2>
+<p>cirobotix setzt auf eine <strong>deterministische Verarbeitungspipeline</strong> statt auf frei formulierte Einzelschritte.
+Der Einstieg erfolgt über die CLI in <code>main.py</code>, welche die Befehle <code>draft</code>, <code>ai-draft-workorder</code>, <code>promote-workorder</code> und <code>generate</code> an Services delegiert.</p>
+<h2 id="leitprinzipien">Leitprinzipien</h2>
 <ul>
-<li>Pipeline-Orientierung</li>
-<li>Trennung von Blueprint, Task und Ausführung</li>
-<li>Qualitätssicherung über mehrere Stufen</li>
+<li><strong>Trennung von Verantwortung</strong>: CLI, Services, Modelle, Maschinen, Writer/Loader.</li>
+<li><strong>Expliziter Prozess</strong>: Jeder Pipeline-Schritt ist als Machine nachvollziehbar.</li>
+<li><strong>Fail-fast Qualität</strong>: Bei Qualitätsfehlern kann der Lauf sofort abbrechen.</li>
+<li><strong>Artefaktorientiert</strong>: Work Orders, Reviews, Responses und Ziel-Dateien sind zentrale Ergebnisse.</li>
 </ul>
+<h2 id="systemgrenzen">Systemgrenzen</h2>
+<pre><code class="language-text">CLI -&gt; Service Layer -&gt; ProductionLine (Machines) -&gt; Datei-/Code-Artefakte
+</code></pre>
+<ul>
+<li><strong>Innerhalb des Systems</strong>: Draft-Erstellung, Prompting, Ausführung, Checks, Apply, Format, Tests.</li>
+<li><strong>Außerhalb des Systems</strong>: CI/CD-Deployment und Release-Orchestrierung.</li>
+</ul>
+<h2 id="kernobjekte">Kernobjekte</h2>
+<ul>
+<li><strong>WorkOrder</strong>: Auftragsdaten für eine konkrete Ausführung.</li>
+<li><strong>ProductionProfile</strong>: Laufzeit- und Qualitätsverhalten.</li>
+<li><strong>ProjectContext</strong>: Informationen über das Zielprojekt.</li>
+<li><strong>ProductionContext</strong>: transportiert Zustand und Ergebnisse durch die Pipeline.</li>
+</ul>
+<h2 id="laufzeitfluss-high-level">Laufzeitfluss (high level)</h2>
+<ol>
+<li>CLI liest Argumente und wählt den Befehl.</li>
+<li>Service lädt WorkOrder/Projekt/Profil.</li>
+<li>Service baut die <code>ProductionLine</code> mit Machines auf.</li>
+<li><code>ProductionLine</code> führt Machines sequentiell aus und sammelt Step-Resultate.</li>
+<li>Fehler werden im Context protokolliert; bei <code>fail_on_quality_error</code> wird abgebrochen.</li>
+</ol>
               
             </div>
           </div><footer>

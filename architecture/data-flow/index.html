@@ -71,6 +71,18 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Data Flow</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#end-to-end-ablauf">End-to-End Ablauf</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#schritt-1-input-laden">Schritt 1: Input-Laden</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#schritt-2-kontext-anreicherung">Schritt 2: Kontext-Anreicherung</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#schritt-3-ausfuhrung-und-qualitat">Schritt 3: Ausführung und Qualität</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#schritt-4-ergebnis-und-fehlerverhalten">Schritt 4: Ergebnis und Fehlerverhalten</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#wichtige-artefakte-im-lauf">Wichtige Artefakte im Lauf</a>
+    </li>
     </ul>
                   </li>
               </ul>
@@ -104,13 +116,44 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="architektur-datenfluss">Architektur – Datenfluss</h1>
-<p>Diese Seite dokumentiert den geplanten Datenfluss von Task zu erzeugten Artefakten.</p>
+<h2 id="end-to-end-ablauf">End-to-End Ablauf</h2>
+<pre><code class="language-text">Task/WorkOrder
+  -&gt; Loader (WorkOrder, Project, Profile)
+  -&gt; ProductionContext
+  -&gt; ProductionLine (Machines)
+  -&gt; Runtime-Artefakte + StepResults + Errors
+  -&gt; Ziel-Dateien / Tests / Ausgabe
+</code></pre>
+<h2 id="schritt-1-input-laden">Schritt 1: Input-Laden</h2>
 <ul>
-<li>Task-Ingest</li>
-<li>Context-Aufbau</li>
-<li>Generierung</li>
-<li>Validierung</li>
-<li>Anwendung</li>
+<li>WorkOrder wird geladen.</li>
+<li>Projektkontext wird geladen.</li>
+<li>Profil wird geladen.</li>
+<li>Blueprint wird über die Registry aufgelöst.</li>
+</ul>
+<p>Ergebnis: initialer <code>ProductionContext</code>.</p>
+<h2 id="schritt-2-kontext-anreicherung">Schritt 2: Kontext-Anreicherung</h2>
+<p><code>ContextAssembler</code>, <code>PromptBuilder</code> und <code>ReviewBuilder</code> erweitern den Context,
+bevor die eigentliche Ausführung startet.</p>
+<h2 id="schritt-3-ausfuhrung-und-qualitat">Schritt 3: Ausführung und Qualität</h2>
+<p><code>Executor</code> erzeugt die Antwort. Danach folgen strukturierte Qualitäts- und Apply-Schritte:</p>
+<ul>
+<li><code>OutputChecker</code> validiert die Antwortstruktur</li>
+<li><code>OutputApplier</code> schreibt Ziel-Dateien</li>
+<li><code>Formatter</code> normalisiert Code</li>
+<li><code>TestRunner</code> prüft die Änderungen</li>
+</ul>
+<h2 id="schritt-4-ergebnis-und-fehlerverhalten">Schritt 4: Ergebnis und Fehlerverhalten</h2>
+<p>Die <code>ProductionLine</code> schreibt für jeden Schritt ein <code>StepResult</code> in den Context.</p>
+<p>Bei Fehlern:
+- Fehler wird in <code>context.errors</code> aufgenommen
+- abhängig vom Profil wird fail-fast abgebrochen oder fortgesetzt</p>
+<h2 id="wichtige-artefakte-im-lauf">Wichtige Artefakte im Lauf</h2>
+<ul>
+<li><code>.codegen/requests/&lt;request_id&gt;/task.yaml</code></li>
+<li><code>.codegen/requests/&lt;request_id&gt;/review.md</code></li>
+<li>Runtime-/Response-Dateien</li>
+<li>angewendete Projektdateien</li>
 </ul>
               
             </div>
