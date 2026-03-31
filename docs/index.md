@@ -1,34 +1,18 @@
-# cirobotix
+# cirobotix Dokumentation
 
-Architecture-driven code generation pipeline.
+Willkommen zur cirobotix-Dokumentation.
 
-## Quality Gates
+Diese Doku wird als neue, klare Struktur aufgebaut und deckt schrittweise ab:
 
-- pytest
-- ruff
-- bandit
-- vulture
-- mkdocs
+- Installation
+- Ausführung / CLI
+- Task-Modell
+- Architektur
 
-## WorkOrder Workflow
+## Empfohlener Einstieg
 
-The current generation workflow is split into three explicit steps:
-
-1. **AI Draft**
-   - Command: `make ai-draft TASK=tasks/<task>.yaml`
-   - Creates an AI-generated `proposal.yaml` from an Atomic Task.
-
-2. **Promote**
-   - Command: `make promote REQUEST_ID=<request_id>`
-   - Validates and promotes `proposal.yaml` to `task.yaml`.
-
-3. **Generate**
-   - Command: `make generate REQUEST_ID=<request_id>`
-   - Runs the production line for the promoted WorkOrder.
-
-Example:
-
-```bash
-make ai-draft TASK=tasks/test_output_checker.yaml
-make promote REQUEST_ID=test_output_checker
-make generate REQUEST_ID=test_output_checker
+1. [Installation](getting-started/installation.md)
+2. [Quickstart](getting-started/quickstart.md)
+3. [CLI Referenz](usage/cli.md)
+4. [Task-Konzept](concepts/tasks.md)
+5. [Architektur-Überblick](architecture/overview.md)
