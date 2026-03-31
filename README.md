@@ -127,6 +127,32 @@ docs/        # documentation
 
 ---
 
+
+## 📦 Distribution
+
+### Install from GitHub
+
+```bash
+pip install "git+https://github.com/cirobotix/cirobotix.git"
+```
+
+### Initialize a project scaffold
+
+```bash
+cirobotix command=init path=. dry_run=true
+cirobotix command=init path=. force=true
+```
+
+This creates project-local `.codegen/` and `tasks/` directories.
+
+### PyPI release model
+
+- Push a tag like `v0.1.0`
+- GitHub Actions builds and validates distributions
+- Publish is done via Trusted Publishing to PyPI
+
+---
+
 ## 📚 Documentation
 
 👉 https://cirobotix.github.io/cirobotix/
