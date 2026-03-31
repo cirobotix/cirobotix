@@ -62,11 +62,9 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Tasks</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#beispiel">Beispiel</a>
+    <li class="toctree-l2"><a class="reference internal" href="#pflichtfelder">Pflichtfelder</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#typische-bestandteile">Typische Bestandteile</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#quelle-im-repository">Quelle im Repository</a>
+    <li class="toctree-l2"><a class="reference internal" href="#vollstandiges-beispiel-aus-dem-repository">Vollständiges Beispiel (aus dem Repository)</a>
     </li>
     </ul>
                   </li>
@@ -111,21 +109,42 @@
               
                 <h1 id="was-ist-ein-task">Was ist ein Task?</h1>
 <p>Ein Task ist eine YAML-Datei mit einer konkreten Arbeitsanweisung für cirobotix.</p>
-<h2 id="beispiel">Beispiel</h2>
+<h2 id="pflichtfelder">Pflichtfelder</h2>
+<p>Bei einem Task sind aktuell <strong>alle folgenden Felder Pflichtfelder</strong>:</p>
+<ul>
+<li><code>task_id</code></li>
+<li><code>blueprint_name</code></li>
+<li><code>title</code></li>
+<li><code>description</code></li>
+<li><code>inputs</code></li>
+<li><code>target_path</code></li>
+<li><code>target_import_path</code></li>
+<li><code>target_name</code></li>
+<li><code>target_kind</code></li>
+<li><code>test_path</code></li>
+<li><code>acceptance_criteria</code></li>
+</ul>
+<h2 id="vollstandiges-beispiel-aus-dem-repository">Vollständiges Beispiel (aus dem Repository)</h2>
 <pre><code class="language-yaml">task_id: test_output_checker
 blueprint_name: python_pytest_unit_test
 title: Create unit tests for OutputChecker
+description: &gt;
+  Create focused pytest unit tests for the OutputChecker class in core/checker.py.
+
+inputs:
+  target_path: core/checkers/checker.py
+  target_import_path: core.checker
+  target_name: OutputChecker
+  target_kind: class
+  test_path: tests/core/checkers/test_checker.py
+
+acceptance_criteria:
+  - Test the successful run path for valid response content.
+  - Test failure when response.md is missing.
+  - Test failure when an expected output block is empty.
+  - Return exactly one file block for tests/core/test_checker.py.
 </code></pre>
-<h2 id="typische-bestandteile">Typische Bestandteile</h2>
-<ul>
-<li><code>task_id</code>: Eindeutige Kennung</li>
-<li><code>blueprint_name</code>: Welcher Blueprint angewendet wird</li>
-<li><code>title</code> / <code>description</code>: Fachliche Beschreibung</li>
-<li><code>inputs</code>: Zielartefakte und Parameter</li>
-<li><code>acceptance_criteria</code>: Konkrete Erfolgskriterien</li>
-</ul>
-<h2 id="quelle-im-repository">Quelle im Repository</h2>
-<p>Ein Beispiel liegt unter <code>tasks/test_output_checker.yaml</code>.</p>
+<p>Quelle: <code>tasks/test_output_checker.yaml</code>.</p>
               
             </div>
           </div><footer>
