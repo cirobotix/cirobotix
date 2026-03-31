@@ -4,9 +4,9 @@ import pytest
 
 from core.blueprints.python_pytest_unit_test import build_python_pytest_unit_test_blueprint
 from core.blueprints.python_registry_class import build_python_registry_class_blueprint
+from core.helpers import request_id_builder as request_id_builder_module
 from core.helpers.python_class_discovery import PythonClassDiscovery
 from core.helpers.request_id_builder import RequestIdBuilder
-from core.helpers import request_id_builder as request_id_builder_module
 from core.helpers.target_path_helper import TargetPathHelper
 
 
