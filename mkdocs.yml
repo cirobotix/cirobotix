@@ -1,5 +1,6 @@
 site_name: cirobotix
 site_description: Architecture-driven code generation pipeline
+
 theme:
   name: readthedocs
 
@@ -10,5 +11,12 @@ plugins:
 
 nav:
   - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Running: getting-started/running.md
+  - Usage:
+      - CLI & Commands: usage/cli.md
+  - Concepts:
+      - Tasks: concepts/tasks.md
   - Architecture: architecture.md
   - Glossary: architecture_decisions/glossary.md
