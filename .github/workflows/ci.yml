@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pytest pytest-cov ruff vulture bandit mkdocs mkdocstrings[python] pytest-mock
+          pip install pytest pytest-cov ruff vulture bandit mkdocs mkdocstrings[python] pytest-mock build
 
       - name: Ruff format check
         run: ruff format --check .
@@ -55,6 +55,14 @@ jobs:
 
       - name: Build documentation
         run: mkdocs build --strict
+
+      - name: Build package artifacts
+        run: python -m build
+
+      - name: Install built wheel and smoke test CLI
+        run: |
+          pip install dist/*.whl
+          cirobotix command=init path=/tmp/cirobotix-ci-smoke dry_run=true
 
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
