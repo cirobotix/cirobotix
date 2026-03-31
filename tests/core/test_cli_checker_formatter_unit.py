@@ -72,8 +72,7 @@ def test_output_checker_run_happy_path(tmp_path: Path, monkeypatch):
     base = tmp_path / ".codegen" / "requests" / "req1"
     base.mkdir(parents=True)
     (base / "response.md").write_text(
-        "### FILE: src/out.py\n```python\nprint('ok')\n```\n"
-        "### FILE: notes.txt\n```\nhello\n```\n",
+        "### FILE: src/out.py\n```python\nprint('ok')\n```\n### FILE: notes.txt\n```\nhello\n```\n",
         encoding="utf-8",
     )
     context = _build_context(writable_files=["src/out.py", "notes.txt"])
@@ -145,7 +144,9 @@ def test_formatter_raises_on_non_zero_return_code(monkeypatch):
 
 def test_formatter_runs_successfully(monkeypatch):
     context = _build_context(writable_files=[], use_formatter=True)
-    context.profile = ProductionProfile(use_code_formatter=True, formatter_command=["ruff", "format"])
+    context.profile = ProductionProfile(
+        use_code_formatter=True, formatter_command=["ruff", "format"]
+    )
     context.written_files = [Path("a.py"), Path("b.py")]
 
     class Result:

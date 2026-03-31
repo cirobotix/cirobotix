@@ -81,7 +81,10 @@ def test_request_id_builder_normalizes_stem_and_uses_timestamp(monkeypatch):
 def test_target_path_helper_converts_to_import_and_test_paths():
     helper = TargetPathHelper()
 
-    assert helper.to_import_path("core/helpers/target_path_helper.py") == "core.helpers.target_path_helper"
+    assert (
+        helper.to_import_path("core/helpers/target_path_helper.py")
+        == "core.helpers.target_path_helper"
+    )
     assert helper.to_test_path("core/helpers/target_path_helper.py") == (
         "tests/core/helpers/test_target_path_helper.py"
     )
