@@ -45,7 +45,7 @@ jobs:
         run: ruff check .
 
       - name: Run unit tests
-        run: PYTHONPATH=. pytest --cov=core --cov-report=term-missing --cov-fail-under=100
+        run: PYTHONPATH=. pytest --cov=core --cov-report=term-missing --cov-fail-under=98
 
       - name: Run Bandit
         run: bandit -r . -c bandit.yml

@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -84,3 +85,24 @@ def test_run_uses_stringified_response_if_output_text_missing(context):
     updated = executor.run(context)
 
     assert updated.response_path.read_text(encoding="utf-8") == "{'data': 'fallback'}"
+
+
+def test_executor_init_handles_openai_present_and_missing(monkeypatch):
+    class OpenAIStub:
+        pass
+
+    monkeypatch.setitem(sys.modules, "openai", SimpleNamespace(OpenAI=OpenAIStub))
+    executor = Executor()
+    assert isinstance(executor.client, OpenAIStub)
+
+    original_import = __import__
+
+    def fake_import(name, *args, **kwargs):
+        if name == "openai":
+            raise ModuleNotFoundError("openai")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.delitem(sys.modules, "openai", raising=False)
+    monkeypatch.setattr("builtins.__import__", fake_import)
+    with pytest.raises(RuntimeError):
+        Executor()

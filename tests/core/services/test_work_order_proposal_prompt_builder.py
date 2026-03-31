@@ -39,3 +39,4 @@ def test_build_prompt_contains_expected_sections_and_formats():
 
 def test_format_value_handles_empty_list():
     assert WorkOrderProposalPromptBuilder()._format_value([]) == "[]"
+    assert WorkOrderProposalPromptBuilder()._format_value(7) == "7"

@@ -19,6 +19,17 @@ class DummyRegistry:
         return self.blueprint
 
 
+def test_init_and_create_registry(monkeypatch):
+    import core.services.work_order_proposal_service as mod
+
+    monkeypatch.setattr(
+        mod, "WorkOrderProposalExecutor", lambda: SimpleNamespace(generate=lambda **_: "x")
+    )
+    service = WorkOrderProposalService()
+    registry = service.create_registry()
+    assert registry is not None
+
+
 def test_create_ai_proposal_happy_path(tmp_path):
     svc = WorkOrderProposalService.__new__(WorkOrderProposalService)
     blueprint = Blueprint(

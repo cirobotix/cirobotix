@@ -1,3 +1,5 @@
+from types import SimpleNamespace
+
 import pytest
 
 from core.models.blueprint import Blueprint
@@ -68,3 +70,82 @@ def test_validator_error_cases(tmp_path):
 
     with pytest.raises(ValueError):
         Validator(registry).run(_context(tmp_path, read_files=["missing.py"]))
+
+
+def test_validator_structure_type_guards(tmp_path):
+    registry = Registry()
+    registry.register(Blueprint(name="bp", component_type="x", required_fields=[]))
+    base_project = ProjectContext(root_path=tmp_path)
+
+    bad_cases = [
+        SimpleNamespace(
+            request_id="r",
+            blueprint_name="bp",
+            profile_name="default",
+            goal="g",
+            read_files="no-list",
+            writable_files=[],
+            invariants=[],
+            acceptance_criteria=[],
+            payload={},
+            order_type=WorkOrderType.CREATE,
+        ),
+        SimpleNamespace(
+            request_id="r",
+            blueprint_name="bp",
+            profile_name="default",
+            goal="g",
+            read_files=[],
+            writable_files="no-list",
+            invariants=[],
+            acceptance_criteria=[],
+            payload={},
+            order_type=WorkOrderType.CREATE,
+        ),
+        SimpleNamespace(
+            request_id="r",
+            blueprint_name="bp",
+            profile_name="default",
+            goal="g",
+            read_files=[],
+            writable_files=[],
+            invariants="no-list",
+            acceptance_criteria=[],
+            payload={},
+            order_type=WorkOrderType.CREATE,
+        ),
+        SimpleNamespace(
+            request_id="r",
+            blueprint_name="bp",
+            profile_name="default",
+            goal="g",
+            read_files=[],
+            writable_files=[],
+            invariants=[],
+            acceptance_criteria="no-list",
+            payload={},
+            order_type=WorkOrderType.CREATE,
+        ),
+        SimpleNamespace(
+            request_id="r",
+            blueprint_name="bp",
+            profile_name="default",
+            goal="g",
+            read_files=[],
+            writable_files=[],
+            invariants=[],
+            acceptance_criteria=[],
+            payload=[],
+            order_type=WorkOrderType.CREATE,
+        ),
+    ]
+
+    for bad_work_order in bad_cases:
+        context = ProductionContext(
+            blueprint=Blueprint(name="bp", component_type="x", required_fields=[]),
+            work_order=bad_work_order,
+            profile=ProductionProfile(),
+            project=base_project,
+        )
+        with pytest.raises(ValueError):
+            Validator(registry).run(context)

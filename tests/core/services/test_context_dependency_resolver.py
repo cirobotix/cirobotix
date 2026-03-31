@@ -23,3 +23,21 @@ def test_context_dependency_resolver_happy_and_edge_cases(tmp_path):
     assert any(dep.priority == "helpful" for dep in result.dependencies)
     assert resolver._infer_path_from_symbol("", ProjectContext(root_path=tmp_path)) is None
     assert resolver._infer_path_from_symbol("abc.def", ProjectContext(root_path=tmp_path)) is None
+    assert (
+        resolver._infer_path_from_symbol("context.work_order", ProjectContext(root_path=tmp_path))
+        == "core/models/work_order.py"
+    )
+
+    (tmp_path / "core/models/work_order.py").unlink()
+    assert (
+        resolver._infer_path_from_symbol("context.work_order", ProjectContext(root_path=tmp_path))
+        is None
+    )
+    assert (
+        resolver._infer_path_from_symbol("context.any", ProjectContext(root_path=tmp_path))
+        == "core/models/context.py"
+    )
+    (tmp_path / "core/models/context.py").unlink()
+    assert (
+        resolver._infer_path_from_symbol("context.any", ProjectContext(root_path=tmp_path)) is None
+    )

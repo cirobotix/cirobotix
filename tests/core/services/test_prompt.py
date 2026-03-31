@@ -40,3 +40,5 @@ def test_prompt_builder_happy_path_and_test_only_rule(tmp_path):
     assert "# Output Rules" in (updated.prompt_text or "")
     assert "Test-Only Rule" in (updated.prompt_text or "")
     assert "[a, b]" in (updated.prompt_text or "")
+    assert PromptBuilder()._format_value([]) == "[]"
+    assert PromptBuilder()._format_value("x") == "x"

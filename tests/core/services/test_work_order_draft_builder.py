@@ -87,6 +87,13 @@ def test_builder_edge_cases():
 
     with pytest.raises(ValueError):
         builder._build_writable_files(request=request, blueprint=blueprint)
+    assert (
+        builder._build_writable_files(
+            request=request,
+            blueprint=Blueprint(name="other", component_type="x", required_fields=[]),
+        )
+        == []
+    )
 
     with pytest.raises(ValueError):
         builder._build_payload(

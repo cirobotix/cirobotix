@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 
+import pytest
+
 from core.models.blueprint import Blueprint
 from core.models.context import ProductionContext
 from core.models.profile import ProductionProfile
@@ -55,6 +57,26 @@ def test_create_draft_happy_path(tmp_path):
     path = svc.create_draft(blueprint_name="python_pytest_unit_test", target_path="core/sample.py")
 
     assert str(path).endswith(".codegen/requests/rid/task.yaml")
+
+
+def test_init_create_registry_and_missing_target(monkeypatch, tmp_path):
+    import core.services.work_order_cli_service as mod
+
+    class DummyExecutor:
+        def __init__(self):
+            self.called = True
+
+    monkeypatch.setattr(mod, "Executor", DummyExecutor)
+    service = WorkOrderCliService()
+    registry = service.create_registry()
+    assert registry is not None
+
+    service.project_loader = SimpleNamespace(load=lambda _p: ProjectContext(root_path=tmp_path))
+    service.create_registry = lambda: DummyRegistry(
+        Blueprint(name="python_pytest_unit_test", component_type="unit_test", required_fields=[])
+    )
+    with pytest.raises(FileNotFoundError):
+        service.create_draft(blueprint_name="python_pytest_unit_test", target_path="missing.py")
 
 
 def test_generate_runs_pipeline(tmp_path):

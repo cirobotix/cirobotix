@@ -27,9 +27,10 @@ def test_annotation_and_find_class_edges(tmp_path):
         inspector._annotation_to_name(ast.parse("x: pkg.Type", mode="single").body[0].annotation)
         == "pkg.Type"
     )
+    assert inspector._annotation_to_name(ast.Constant(value=1)) is None
 
 
-def test_build_candidate_paths_and_infer_methods(tmp_path):
+def test_build_candidate_paths_and_relative_variants(tmp_path):
     inspector = TargetInspector()
     project = ProjectContext(root_path=tmp_path)
     abs_import = inspector._build_candidate_paths(
@@ -48,3 +49,40 @@ def test_build_candidate_paths_and_infer_methods(tmp_path):
         current_file_path="core/services/x.py",
     )
     assert rel_import == []
+
+    rel_with_module = inspector._build_relative_candidate_paths(
+        item=ImportAnalysis(module="a.b", imported_names=["C"], is_relative=True, relative_level=2),
+        current_file_path="core/services/x.py",
+    )
+    assert "core/a/b.py" in rel_with_module
+
+    rel_without_module = inspector._build_relative_candidate_paths(
+        item=ImportAnalysis(module="", imported_names=["util"], is_relative=True, relative_level=1),
+        current_file_path="core/services/x.py",
+    )
+    assert "core/services/util.py" in rel_without_module
+
+
+def test_inspect_missing_file_and_unsupported_kind(tmp_path):
+    inspector = TargetInspector()
+    project = ProjectContext(root_path=tmp_path)
+
+    with pytest.raises(FileNotFoundError):
+        inspector.inspect(
+            project=project,
+            target_path="missing.py",
+            target_import_path="missing",
+            target_kind="class",
+            target_name="X",
+        )
+
+    file_path = tmp_path / "x.py"
+    file_path.write_text("class X:\n    y = 1\n", encoding="utf-8")
+    with pytest.raises(ValueError):
+        inspector.inspect(
+            project=project,
+            target_path="x.py",
+            target_import_path="x",
+            target_kind="function",
+            target_name="X",
+        )
