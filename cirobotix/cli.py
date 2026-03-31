@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from cirobotix.scaffolds import ProjectScaffolder
 from core.cli.cli_args import CliArgsParser
 from core.services.work_order_cli_service import WorkOrderCliService
 from core.services.work_order_proposal_service import WorkOrderProposalService
@@ -85,6 +86,35 @@ def run_generate(args: dict) -> None:
     print_step_results(context.step_results)
 
 
+def _parse_bool(args: dict, key: str, default: bool = False) -> bool:
+    raw_value = args.get(key)
+    if raw_value is None:
+        return default
+
+    normalized = raw_value.strip().lower()
+    if normalized in {"1", "true", "yes", "on"}:
+        return True
+    if normalized in {"0", "false", "no", "off"}:
+        return False
+
+    raise ValueError(f"Invalid boolean value for {key}: {raw_value}")
+
+
+def run_init(args: dict) -> None:
+    target_path = Path(args.get("path", ".")).resolve()
+    force = _parse_bool(args, "force", default=False)
+    dry_run = _parse_bool(args, "dry_run", default=False)
+
+    scaffolder = ProjectScaffolder()
+    result = scaffolder.apply(target_dir=target_path, force=force, dry_run=dry_run)
+
+    mode = "DRY RUN" if dry_run else "APPLIED"
+    print(f"✅ INIT {mode}: {target_path}")
+    print(f"- created: {len(result.created)}")
+    print(f"- overwritten: {len(result.overwritten)}")
+    print(f"- skipped: {len(result.skipped)}")
+
+
 def main() -> None:
     args = CliArgsParser().parse()
     command = args.get("command")
@@ -92,20 +122,20 @@ def main() -> None:
     if not command:
         raise ValueError("Missing required argument: command")
 
-    if command == "draft":
-        run_draft(args)
-        return
+    handlers = {
+        "draft": run_draft,
+        "ai-draft-workorder": run_ai_draft_workorder,
+        "promote-workorder": run_promote_workorder,
+        "generate": run_generate,
+        "init": run_init,
+    }
 
-    if command == "ai-draft-workorder":
-        run_ai_draft_workorder(args)
-        return
+    handler = handlers.get(command)
+    if not handler:
+        raise ValueError(f"Unknown command: {command}")
 
-    if command == "promote-workorder":
-        run_promote_workorder(args)
-        return
+    handler(args)
 
-    if command == "generate":
-        run_generate(args)
-        return
 
-    raise ValueError(f"Unknown command: {command}")
+if __name__ == "__main__":
+    main()
