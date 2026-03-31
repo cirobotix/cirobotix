@@ -50,21 +50,23 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../getting-started/quickstart/">Quickstart</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/running/">Running</a>
+                  </li>
               </ul>
               <p class="caption"><span class="caption-text">Usage</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../usage/cli/">CLI</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../usage/cli/">CLI & Commands</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Concepts</span></p>
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Tasks</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#typische-felder">Typische Felder</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#beispiel">Beispiel</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#ziel">Ziel</a>
+    <li class="toctree-l2"><a class="reference internal" href="#typische-bestandteile">Typische Bestandteile</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quelle-im-repository">Quelle im Repository</a>
     </li>
     </ul>
                   </li>
@@ -108,28 +110,27 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="was-ist-ein-task">Was ist ein Task?</h1>
-<p>Ein Task ist die konkrete Arbeitsbeschreibung für cirobotix und liegt als YAML-Datei vor (z. B. in <code>tasks/</code>).</p>
-<h2 id="typische-felder">Typische Felder</h2>
-<ul>
-<li><code>task_id</code></li>
-<li><code>blueprint_name</code></li>
-<li><code>title</code></li>
-<li><code>description</code></li>
-<li><code>inputs</code></li>
-<li><code>acceptance_criteria</code></li>
-</ul>
+<p>Ein Task ist eine YAML-Datei mit einer konkreten Arbeitsanweisung für cirobotix.</p>
 <h2 id="beispiel">Beispiel</h2>
-<p>Siehe:</p>
+<pre><code class="language-yaml">task_id: test_output_checker
+blueprint_name: python_pytest_unit_test
+title: Create unit tests for OutputChecker
+</code></pre>
+<h2 id="typische-bestandteile">Typische Bestandteile</h2>
 <ul>
-<li><code>tasks/test_output_checker.yaml</code></li>
+<li><code>task_id</code>: Eindeutige Kennung</li>
+<li><code>blueprint_name</code>: Welcher Blueprint angewendet wird</li>
+<li><code>title</code> / <code>description</code>: Fachliche Beschreibung</li>
+<li><code>inputs</code>: Zielartefakte und Parameter</li>
+<li><code>acceptance_criteria</code>: Konkrete Erfolgskriterien</li>
 </ul>
-<h2 id="ziel">Ziel</h2>
-<p>Ein Task beschreibt <strong>was</strong> erzeugt oder geprüft werden soll, inklusive klarer Akzeptanzkriterien.</p>
+<h2 id="quelle-im-repository">Quelle im Repository</h2>
+<p>Ein Beispiel liegt unter <code>tasks/test_output_checker.yaml</code>.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../../usage/cli/" class="btn btn-neutral float-left" title="CLI"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../usage/cli/" class="btn btn-neutral float-left" title="CLI & Commands"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../../architecture/overview/" class="btn btn-neutral float-right" title="Overview">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 

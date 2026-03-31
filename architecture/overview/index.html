@@ -50,10 +50,12 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../../getting-started/quickstart/">Quickstart</a>
                   </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../getting-started/running/">Running</a>
+                  </li>
               </ul>
               <p class="caption"><span class="caption-text">Usage</span></p>
               <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../../usage/cli/">CLI</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../../usage/cli/">CLI & Commands</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Concepts</span></p>
@@ -65,10 +67,6 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Overview</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#kernbausteine">Kernbausteine</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#nachste-schritte-in-der-doku">Nächste Schritte in der Doku</a>
-    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../components/">Components</a>
@@ -106,22 +104,11 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="architektur-uberblick">Architektur – Überblick</h1>
-<p>cirobotix folgt einer pipeline-orientierten Architektur:</p>
-<pre><code class="language-text">Task / Work Order -&gt; Context Assembly -&gt; Prompt/Execution -&gt; Output Checks -&gt; Apply -&gt; Format/Test
-</code></pre>
-<h2 id="kernbausteine">Kernbausteine</h2>
+<p>Die Architektur-Dokumentation wird schrittweise ausgebaut.</p>
 <ul>
-<li>Blueprints</li>
-<li>Work Orders / Tasks</li>
-<li>Services</li>
-<li>Runner / Checker / Formatter</li>
-<li>Writers</li>
-</ul>
-<h2 id="nachste-schritte-in-der-doku">Nächste Schritte in der Doku</h2>
-<ul>
-<li>Komponenten im Detail</li>
-<li>Datenfluss zwischen Modulen</li>
-<li>Architekturentscheidungen</li>
+<li>Pipeline-Orientierung</li>
+<li>Trennung von Blueprint, Task und Ausführung</li>
+<li>Qualitätssicherung über mehrere Stufen</li>
 </ul>
               
             </div>

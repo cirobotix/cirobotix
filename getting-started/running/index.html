@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Installation - cirobotix</title>
+    <title>Running - cirobotix</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Installation";
-        var mkdocs_page_input_path = "getting-started/installation.md";
+        var mkdocs_page_name = "Running";
+        var mkdocs_page_input_path = "getting-started/running.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -46,23 +46,21 @@
               </ul>
               <p class="caption"><span class="caption-text">Getting Started</span></p>
               <ul class="current">
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Installation</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#voraussetzungen">Voraussetzungen</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#repository-klonen">Repository klonen</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#abhangigkeiten-installieren">Abhängigkeiten installieren</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#optional-virtuelle-umgebung">Optional: virtuelle Umgebung</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#installation-als-paket-roadmap">Installation als Paket (Roadmap)</a>
-    </li>
-    </ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../running/">Running</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Running</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-ai-draft-erstellen">1) AI Draft erstellen</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-proposal-promoten">2) Proposal promoten</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-generierung-ausfuhren">3) Generierung ausführen</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ergebnis">Ergebnis</a>
+    </li>
+    </ul>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Usage</span></p>
@@ -104,7 +102,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Getting Started</li>
-      <li class="breadcrumb-item active">Installation</li>
+      <li class="breadcrumb-item active">Running</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -113,34 +111,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="installation">Installation</h1>
-<h2 id="voraussetzungen">Voraussetzungen</h2>
-<ul>
-<li>Python 3.9+</li>
-<li><code>pip</code></li>
-<li><code>make</code></li>
-</ul>
-<h2 id="repository-klonen">Repository klonen</h2>
-<pre><code class="language-bash">git clone https://github.com/cirobotix/cirobotix.git
-cd cirobotix
+                <h1 id="projekt-ausfuhren">Projekt ausführen</h1>
+<p>Der aktuelle Workflow folgt drei Schritten.</p>
+<h2 id="1-ai-draft-erstellen">1) AI Draft erstellen</h2>
+<pre><code class="language-bash">make ai-draft TASK=tasks/test_output_checker.yaml
 </code></pre>
-<h2 id="abhangigkeiten-installieren">Abhängigkeiten installieren</h2>
-<pre><code class="language-bash">pip install -r requirements.txt
+<h2 id="2-proposal-promoten">2) Proposal promoten</h2>
+<pre><code class="language-bash">make promote REQUEST_ID=test_output_checker
 </code></pre>
-<h2 id="optional-virtuelle-umgebung">Optional: virtuelle Umgebung</h2>
-<pre><code class="language-bash">python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+<h2 id="3-generierung-ausfuhren">3) Generierung ausführen</h2>
+<pre><code class="language-bash">make generate REQUEST_ID=test_output_checker
 </code></pre>
-<h2 id="installation-als-paket-roadmap">Installation als Paket (Roadmap)</h2>
-<p>Eine direkte Paketinstallation über <code>pip install cirobotix</code> ist als nächster Schritt geplant.
-Bis dahin ist der empfohlene Weg die Nutzung über das Repository.</p>
+<h2 id="ergebnis">Ergebnis</h2>
+<p>Nach erfolgreichem Lauf findest du die erzeugten Artefakte unter <code>.codegen/requests/&lt;request_id&gt;/</code>.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../.." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../quickstart/" class="btn btn-neutral float-right" title="Quickstart">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../quickstart/" class="btn btn-neutral float-left" title="Quickstart"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../usage/cli/" class="btn btn-neutral float-right" title="CLI & Commands">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -163,10 +152,10 @@ Bis dahin ist der empfohlene Weg die Nutzung über das Repository.</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../.." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../quickstart/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../../usage/cli/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
