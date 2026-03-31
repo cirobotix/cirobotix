@@ -10,15 +10,15 @@ def test_inspect_output_applier_class_extracts_public_methods_and_project_import
 
     analysis = inspector.inspect(
         project=project,
-        target_path="core/applier.py",
-        target_import_path="core.applier",
+        target_path="core/appliers/applier.py",
+        target_import_path="core.appliers.applier",
         target_kind="class",
         target_name="OutputApplier",
     )
 
     assert analysis.class_name == "OutputApplier"
     assert "run" in analysis.public_methods
-    assert "core/context.py" in analysis.direct_project_imports
+    assert "core/models/context.py" in analysis.direct_project_imports
 
 
 def test_inspect_output_applier_collects_context_related_symbols():
@@ -27,8 +27,8 @@ def test_inspect_output_applier_collects_context_related_symbols():
 
     analysis = inspector.inspect(
         project=project,
-        target_path="core/applier.py",
-        target_import_path="core.applier",
+        target_path="core/appliers/applier.py",
+        target_import_path="core.appliers.applier",
         target_kind="class",
         target_name="OutputApplier",
     )

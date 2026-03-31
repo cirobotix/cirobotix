@@ -20,8 +20,8 @@ def test_build_pytest_unit_test_work_order_from_analysis_and_dependencies():
 
     analysis = inspector.inspect(
         project=project,
-        target_path="core/applier.py",
-        target_import_path="core.applier",
+        target_path="core/appliers/applier.py",
+        target_import_path="core.appliers.applier",
         target_kind="class",
         target_name="OutputApplier",
     )
@@ -38,9 +38,9 @@ def test_build_pytest_unit_test_work_order_from_analysis_and_dependencies():
         order_type=WorkOrderType.CREATE,
         target_name="OutputApplier",
         target_kind="class",
-        target_import_path="core.applier",
-        target_path="core/applier.py",
-        test_path="tests/core/test_applier.py",
+        target_import_path="core.appliers.applier",
+        target_path="core/appliers/applier.py",
+        test_path="tests/core/appliers/test_applier.py",
     )
 
     work_order = builder.build(
@@ -52,15 +52,15 @@ def test_build_pytest_unit_test_work_order_from_analysis_and_dependencies():
 
     assert work_order.request_id == "applier_unit_test_draft"
     assert work_order.blueprint_name == "python_pytest_unit_test"
-    assert work_order.writable_files == ["tests/core/test_applier.py"]
+    assert work_order.writable_files == ["tests/core/appliers/test_applier.py"]
 
-    assert "core/applier.py" in work_order.read_files
-    assert "core/context.py" in work_order.read_files
+    assert "core/appliers/applier.py" in work_order.read_files
+    assert "core/models/context.py" in work_order.read_files
 
     assert work_order.payload["target_name"] == "OutputApplier"
-    assert work_order.payload["target_import_path"] == "core.applier"
-    assert work_order.payload["target_path"] == "core/applier.py"
-    assert work_order.payload["test_path"] == "tests/core/test_applier.py"
+    assert work_order.payload["target_import_path"] == "core.appliers.applier"
+    assert work_order.payload["target_path"] == "core/appliers/applier.py"
+    assert work_order.payload["test_path"] == "tests/core/appliers/test_applier.py"
 
 
 def test_build_pytest_unit_test_work_order_requires_test_path():
@@ -72,8 +72,8 @@ def test_build_pytest_unit_test_work_order_requires_test_path():
 
     analysis = inspector.inspect(
         project=project,
-        target_path="core/applier.py",
-        target_import_path="core.applier",
+        target_path="core/appliers/applier.py",
+        target_import_path="core.appliers.applier",
         target_kind="class",
         target_name="OutputApplier",
     )
@@ -90,8 +90,8 @@ def test_build_pytest_unit_test_work_order_requires_test_path():
         order_type=WorkOrderType.CREATE,
         target_name="OutputApplier",
         target_kind="class",
-        target_import_path="core.applier",
-        target_path="core/applier.py",
+        target_import_path="core.appliers.applier",
+        target_path="core/appliers/applier.py",
         test_path=None,
     )
 

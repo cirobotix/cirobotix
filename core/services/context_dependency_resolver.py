@@ -87,10 +87,10 @@ class ContextDependencyResolver:
             return None
 
         exact_candidate_map = {
-            "context.work_order": "core/work_order.py",
-            "context.project": "core/project_context.py",
-            "context.profile": "core/profile.py",
-            "context.blueprint": "core/blueprint.py",
+            "context.work_order": "core/models/work_order.py",
+            "context.project": "core/models/project_context.py",
+            "context.profile": "core/models/profile.py",
+            "context.blueprint": "core/models/blueprint.py",
         }
 
         for prefix, candidate in exact_candidate_map.items():
@@ -102,11 +102,11 @@ class ContextDependencyResolver:
         left_part = symbol.split(".", 1)[0]
 
         root_candidate_map = {
-            "context": "core/context.py",
-            "project": "core/project_context.py",
-            "work_order": "core/work_order.py",
-            "profile": "core/profile.py",
-            "blueprint": "core/blueprint.py",
+            "context": "core/models/context.py",
+            "project": "core/models/project_context.py",
+            "work_order": "core/models/work_order.py",
+            "profile": "core/models/profile.py",
+            "blueprint": "core/models/blueprint.py",
         }
 
         candidate = root_candidate_map.get(left_part)
