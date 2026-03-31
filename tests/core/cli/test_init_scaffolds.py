@@ -1,4 +1,3 @@
-
 import pytest
 
 from cirobotix.cli import _parse_bool
