@@ -22,6 +22,17 @@ cirobotix = "cirobotix.cli:main"
 [tool.hatch.build.targets.wheel]
 packages = ["cirobotix", "core"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+  "/cirobotix",
+  "/core",
+  "/tasks",
+  "/config",
+  "/README.md",
+  "/main.py",
+  "/pyproject.toml",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
