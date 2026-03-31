@@ -1,0 +1,44 @@
+# Was ist ein Task?
+
+Ein Task ist eine YAML-Datei mit einer konkreten Arbeitsanweisung für cirobotix.
+
+## Pflichtfelder
+
+Bei einem Task sind aktuell **alle folgenden Felder Pflichtfelder**:
+
+- `task_id`
+- `blueprint_name`
+- `title`
+- `description`
+- `inputs`
+  - `target_path`
+  - `target_import_path`
+  - `target_name`
+  - `target_kind`
+  - `test_path`
+- `acceptance_criteria`
+
+## Vollständiges Beispiel (aus dem Repository)
+
+```yaml
+task_id: test_output_checker
+blueprint_name: python_pytest_unit_test
+title: Create unit tests for OutputChecker
+description: >
+  Create focused pytest unit tests for the OutputChecker class in core/checker.py.
+
+inputs:
+  target_path: core/checkers/checker.py
+  target_import_path: core.checker
+  target_name: OutputChecker
+  target_kind: class
+  test_path: tests/core/checkers/test_checker.py
+
+acceptance_criteria:
+  - Test the successful run path for valid response content.
+  - Test failure when response.md is missing.
+  - Test failure when an expected output block is empty.
+  - Return exactly one file block for tests/core/test_checker.py.
+```
+
+Quelle: `tasks/test_output_checker.yaml`.
