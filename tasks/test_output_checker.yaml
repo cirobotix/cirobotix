@@ -5,11 +5,11 @@ description: >
   Create focused pytest unit tests for the OutputChecker class in core/checker.py.
 
 inputs:
-  target_path: core/checker.py
+  target_path: core/checkers/checker.py
   target_import_path: core.checker
   target_name: OutputChecker
   target_kind: class
-  test_path: tests/core/test_checker.py
+  test_path: tests/core/checkers/test_checker.py
 
 acceptance_criteria:
   - Test the successful run path for valid response content.

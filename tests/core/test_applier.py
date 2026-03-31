@@ -1,11 +1,11 @@
 import pytest
 
-from core.applier import OutputApplier
-from core.blueprint import Blueprint
-from core.context import ProductionContext
-from core.profile import ProductionProfile
-from core.project_context import ProjectContext
-from core.work_order import WorkOrder
+from core.appliers.applier import OutputApplier
+from core.models.blueprint import Blueprint
+from core.models.context import ProductionContext
+from core.models.profile import ProductionProfile
+from core.models.project_context import ProjectContext
+from core.models.work_order import WorkOrder
 
 
 @pytest.fixture

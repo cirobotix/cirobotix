@@ -3,12 +3,12 @@ from pathlib import Path
 import pytest
 
 from core.blueprints.python_pytest_unit_test import build_python_pytest_unit_test_blueprint
-from core.context_dependency_resolver import ContextDependencyResolver
-from core.project_context import ProjectContext
-from core.target_inspector import TargetInspector
-from core.work_order_draft_builder import WorkOrderDraftBuilder
-from core.work_order_draft_request import WorkOrderDraftRequest
-from core.work_order_type import WorkOrderType
+from core.models.project_context import ProjectContext
+from core.models.work_order_draft_request import WorkOrderDraftRequest
+from core.models.work_order_type import WorkOrderType
+from core.services.context_dependency_resolver import ContextDependencyResolver
+from core.services.target_inspector import TargetInspector
+from core.services.work_order_draft_builder import WorkOrderDraftBuilder
 
 
 def test_build_pytest_unit_test_work_order_from_analysis_and_dependencies():

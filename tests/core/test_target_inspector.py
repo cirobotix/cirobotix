@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from core.project_context import ProjectContext
-from core.target_inspector import TargetInspector
+from core.models.project_context import ProjectContext
+from core.services.target_inspector import TargetInspector
 
 
 def test_inspect_output_applier_class_extracts_public_methods_and_project_imports():

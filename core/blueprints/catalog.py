@@ -1,4 +1,4 @@
-from core.registry import Registry
+from core.registry.registry import Registry
 
 from .python_pytest_unit_test import build_python_pytest_unit_test_blueprint
 from .python_registry_class import build_python_registry_class_blueprint

@@ -1,6 +1,6 @@
 import pytest
 
-from core.blueprint import Blueprint
+from core.models.blueprint import Blueprint
 
 
 def test_blueprint_creation_happy_path():

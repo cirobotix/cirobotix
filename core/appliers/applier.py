@@ -1,0 +1,45 @@
+import re
+from pathlib import Path
+
+from core.models.context import ProductionContext
+
+
+class OutputApplier:
+    def run(self, context: ProductionContext) -> ProductionContext:
+        base = Path(".codegen") / "requests" / context.work_order.request_id
+        response_path = base / "response.md"
+
+        if not response_path.exists():
+            raise FileNotFoundError("response.md not found")
+
+        content = response_path.read_text(encoding="utf-8")
+        files = self._extract_files(content)
+
+        written_files: list[Path] = []
+
+        for relative_path, code in files.items():
+            target = Path(relative_path)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(code.rstrip() + "\n", encoding="utf-8")
+            written_files.append(target)
+
+        context.written_files = written_files
+        return context
+
+    def _extract_files(self, content: str) -> dict[str, str]:
+        pattern = (
+            r"(?ms)^### FILE:\s*(.+?)\n"
+            r"^```[a-zA-Z0-9_-]*\n"
+            r"(.*?)"
+            r"^```[ \t]*$"
+        )
+        matches = re.findall(pattern, content)
+
+        files: dict[str, str] = {}
+        for path, code in matches:
+            files[path.strip()] = code.strip()
+
+        if not files:
+            raise ValueError("No file blocks found in response")
+
+        return files
