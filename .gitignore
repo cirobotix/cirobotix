@@ -19,3 +19,8 @@ venv/
 secret.txt
 project_dump.txt
 export.py
+# Packaging artifacts
+dist/
+build/
+*.egg-info/
+
