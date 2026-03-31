@@ -1,4 +1,4 @@
-from core.blueprint import Blueprint
+from core.models.blueprint import Blueprint
 
 
 def build_python_pytest_unit_test_blueprint() -> Blueprint:

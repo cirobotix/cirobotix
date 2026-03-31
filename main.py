@@ -1,8 +1,8 @@
 from pathlib import Path
 
-from core.cli_args import CliArgsParser
-from core.work_order_cli_service import WorkOrderCliService
-from core.work_order_proposal_service import WorkOrderProposalService
+from core.cli.cli_args import CliArgsParser
+from core.services.work_order_cli_service import WorkOrderCliService
+from core.services.work_order_proposal_service import WorkOrderProposalService
 
 DEFAULT_PROJECT_CONFIG = "config/projects/local_project.yaml"
 DEFAULT_PROFILE = "default"
